@@ -1,5 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CtaBanner, PageHero, ServiceCard } from "@/components/clinic";
-import { services } from "@/lib/clinic-data";
-export const Route=createFileRoute("/services")({head:()=>({meta:[{title:"Dental Services in Yelahanka | ROOTS Dental"},{name:"description",content:"Explore general dentistry, root canal treatment, implants, braces, aligners, pediatric dentistry and more in Yelahanka."},{property:"og:title",content:"Our Dental Services | ROOTS DENTAL CLINIC"},{property:"og:description",content:"Comprehensive, personalized dental treatments in Yelahanka, Bengaluru."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}],links:[{rel:"canonical",href:"/services"}]}),component:ServicesPage});
-function ServicesPage(){return <main><PageHero eyebrow="Our services" title="Complete dental care, thoughtfully planned" text="Explore preventive, restorative, orthodontic, cosmetic and surgical dental care. Every recommendation begins with an individual clinical assessment."/><section className="section"><div className="mx-auto grid max-w-7xl gap-6 px-5 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">{services.map(s=><ServiceCard key={s.slug} service={s}/>)}</div></section><CtaBanner/></main>}
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+export const Route=createFileRoute("/services")({component:ServicesLayout});
+function ServicesLayout(){return <Outlet/>}
