@@ -107,7 +107,6 @@ service cloud.firestore {
         && d.get('couponCode', '') is string && d.get('couponCode', '').size() <= 40
         && d.get('websiteUrl', '') is string && d.get('websiteUrl', '').size() <= 500
         && d.get('terms', '') is string && d.get('terms', '').size() <= 5000
-        && d.get('terms', '') is string && d.get('terms', '').size() <= 5000
         && d.createdAt == request.time;
     }
 
