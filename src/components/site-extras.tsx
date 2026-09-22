@@ -20,16 +20,19 @@ export function ProfileAvatar({
   const dim = size === "lg" ? "size-32 sm:size-40" : "size-20";
   if (photo) {
     return (
-      <img
-        src={photo}
-        alt={name}
-        className={`${dim} shrink-0 rounded-full bg-card object-cover shadow-lg ring-4 ring-primary-foreground/20`}
-      />
+      <div className="relative">
+        <span className="pointer-events-none absolute -inset-2 rounded-full bg-primary/10 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
+        <img
+          src={photo}
+          alt={name}
+          className={`${dim} relative shrink-0 rounded-full bg-card object-cover shadow-lg ring-4 ring-primary-foreground/20 transition-transform duration-500 group-hover:scale-105`}
+        />
+      </div>
     );
   }
   return (
     <span
-      className={`grid ${dim} shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary to-coral font-display font-bold text-primary-foreground shadow-lg ring-4 ring-primary-foreground/20 ${size === "lg" ? "text-4xl sm:text-5xl" : "text-lg"}`}
+      className={`grid ${dim} shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary to-coral font-display font-bold text-primary-foreground shadow-lg ring-4 ring-primary-foreground/20 transition-transform duration-500 group-hover:scale-105 ${size === "lg" ? "text-4xl sm:text-5xl" : "text-lg"}`}
     >
       {initials}
     </span>
@@ -70,13 +73,20 @@ export function HighlightList({ items }: { items: string[] }) {
 export function DoctorCard({ doctor }: { doctor: DoctorProfile }) {
   return (
     <Reveal>
-      <article className="flex flex-col items-center rounded-lg border border-border bg-card p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-        <ProfileAvatar
-          photo={doctor.photo?.url}
-          initials={doctorInitials(doctor.name)}
-          name={doctor.name}
-        />
-        <h3 className="mt-6 font-display text-xl text-foreground">{doctor.name}</h3>
+      <article className="group relative flex flex-col items-center overflow-hidden rounded-3xl border border-border bg-card p-8 text-center shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium">
+        <span className="pointer-events-none absolute -right-10 -top-10 size-28 rounded-full bg-primary/10 blur-2xl transition-transform duration-700 group-hover:scale-150" aria-hidden="true" />
+        <span className="pointer-events-none absolute left-1/2 top-4 h-px w-24 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/40 to-transparent" aria-hidden="true" />
+        <div className="relative">
+          <ProfileAvatar
+            photo={doctor.photo?.url}
+            initials={doctorInitials(doctor.name)}
+            name={doctor.name}
+          />
+          <span className="absolute -bottom-1 -right-1 grid size-8 place-items-center rounded-full border-4 border-card bg-sunny text-sunny-foreground shadow-sm transition-transform duration-300 group-hover:rotate-12">
+            <Sparkles className="size-3.5" />
+          </span>
+        </div>
+        <h3 className="mt-6 font-display text-xl text-foreground transition-colors duration-300 group-hover:text-primary">{doctor.name}</h3>
         <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-primary">
           <Sparkles className="size-4" />
           {doctor.yearsOfExperience}+ years of experience
@@ -86,16 +96,17 @@ export function DoctorCard({ doctor }: { doctor: DoctorProfile }) {
           {doctor.qualification}
         </p>
         <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-          {doctor.services.map((t) => (
+          {doctor.services.map((t, index) => (
             <span
               key={t}
-              className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-primary"
+              className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-primary transition-transform duration-300 group-hover:-translate-y-0.5"
+              style={{ transitionDelay: `${index * 40}ms` }}
             >
               {t}
             </span>
           ))}
         </div>
-        <Button asChild variant="hero" className="mt-6 w-full">
+        <Button asChild variant="hero" className="mt-6 w-full transition-transform duration-300 group-hover:scale-[1.02]">
           <Link to="/contact" search={{ doctor: doctor.id }} hash="appointment-form">
             <CalendarDays />
             Book Appointment
