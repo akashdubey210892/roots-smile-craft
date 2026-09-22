@@ -117,23 +117,35 @@ export function DoctorCard({ doctor }: { doctor: DoctorProfile }) {
   );
 }
 
-export function ManagementCard({ profile }: { profile: ManagementProfile }) {
+export function ManagementCard({
+  profile,
+  compact = false,
+}: {
+  profile: ManagementProfile;
+  compact?: boolean;
+}) {
   const shortCredentials = profile.credentials.slice(0, 3);
   const shortTags = profile.tags.slice(0, 3);
   const isMedicalLeader = profile.slug.includes("kamal");
 
   return (
     <Reveal>
-      <article className="group relative overflow-hidden rounded-[2rem] border border-primary/15 bg-card shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium">
+      <article
+        className={`group relative overflow-hidden rounded-[2rem] border border-primary/15 bg-card shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium ${compact ? "h-full" : ""}`}
+      >
         <div className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full bg-primary/10 blur-3xl transition-transform duration-700 group-hover:scale-150" />
-        <div className="grid lg:grid-cols-[minmax(230px,0.8fr)_1.2fr]">
-          <div className="relative min-h-[300px] overflow-hidden bg-soft lg:min-h-[360px]">
+        <div className="grid h-full lg:grid-cols-[minmax(240px,0.82fr)_1.18fr]">
+          <div
+            className={`relative overflow-hidden bg-soft ${
+              compact ? "min-h-[320px] lg:min-h-[390px]" : "min-h-[420px] lg:min-h-[520px]"
+            }`}
+          >
             <img
               src={profile.photo}
               alt={profile.name}
-              className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+              className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.035]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/10 to-transparent" />
             <div className="absolute left-5 top-5 rounded-full bg-background/90 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary shadow-sm backdrop-blur">
               {isMedicalLeader ? "Leadership" : "Dental Leadership"}
             </div>
