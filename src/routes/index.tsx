@@ -22,6 +22,7 @@ import {
 } from "@/components/clinic";
 import { DoctorCard } from "@/components/site-extras";
 import { SmileJourney } from "@/components/smile-journey";
+import { InteractiveServices } from "@/components/interactive-services";
 import { clinic, services } from "@/lib/clinic-data";
 import { useDoctors } from "@/lib/doctors";
 import { OffersSection, CampaignsSection } from "@/components/promotions";
@@ -146,6 +147,8 @@ function Index() {
       </section>
 
       <SmileJourney />
+
+      <InteractiveServices />
 
       <section className="section relative overflow-hidden">
         <div className="pointer-events-none absolute -left-20 top-24 size-64 bg-sunny/25 blob-shape blur-3xl" aria-hidden="true" />
