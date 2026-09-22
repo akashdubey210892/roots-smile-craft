@@ -2,88 +2,90 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CtaBanner, SectionHeading } from "@/components/clinic";
-import { DoctorCard, HighlightList, ProfileAvatar, TagList } from "@/components/site-extras";
-import { clinic, doctors, getDoctor } from "@/lib/clinic-data";
+import { HighlightList, ManagementCard, ProfileAvatar, TagList } from "@/components/site-extras";
+import { clinic, getManagementProfile, management } from "@/lib/clinic-data";
 
-export const Route = createFileRoute("/doctors/$slug")({
+export const Route = createFileRoute("/about_/our-management_/$slug")({
   loader: ({ params }) => {
-    const doctor = getDoctor(params.slug);
-    if (!doctor) throw notFound();
-    return {
-      name: doctor.name,
-      role: doctor.role,
-      seoDescription: doctor.seoDescription,
-      keywords: doctor.keywords,
-    };
+    const profile = getManagementProfile(params.slug);
+    if (!profile) throw notFound();
+    return { name: profile.name, role: profile.role, org: profile.org };
   },
   head: ({ loaderData }) => {
     if (!loaderData)
       return {
         meta: [
-          { title: "Doctor not found | ROOTS Dental" },
+          { title: "Profile not found | ROOTS Dental Clinic" },
           { name: "robots", content: "noindex" },
         ],
       };
-    const { name, role, seoDescription, keywords } = loaderData;
+    const { name, role, org } = loaderData;
     return {
       meta: [
-        { title: `${name} – ${role} | ROOTS Dental` },
-        { name: "description", content: seoDescription },
-        { name: "keywords", content: keywords.join(", ") },
+        { title: `${name} – ${role} | ROOTS Dental Clinic` },
+        {
+          name: "description",
+          content: `${role} at ${org}. Read the full profile, expertise and career highlights.`,
+        },
         { property: "og:title", content: name },
-        { property: "og:description", content: seoDescription },
+        { property: "og:description", content: `${role} at ${org}.` },
         { property: "og:type", content: "profile" },
         { name: "twitter:card", content: "summary_large_image" },
       ],
     };
   },
-  notFoundComponent: DoctorNotFound,
-  component: DoctorDetail,
+  notFoundComponent: ProfileNotFound,
+  component: ProfileDetail,
 });
 
-function DoctorNotFound() {
+function ProfileNotFound() {
   return (
     <section className="section">
       <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
-        <h1 className="font-display text-4xl text-foreground">Doctor not found</h1>
+        <h1 className="font-display text-4xl text-foreground">Profile not found</h1>
         <p className="mt-4 text-muted-foreground">
-          The profile you are looking for is not available. Browse our doctors instead.
+          The profile you are looking for is not available. Browse our leadership team instead.
         </p>
         <Button asChild className="mt-8">
-          <Link to="/doctors">View Our Doctors</Link>
+          <Link to="/about/our-management">View Our Management</Link>
         </Button>
       </div>
     </section>
   );
 }
 
-function DoctorDetail() {
+function ProfileDetail() {
   const { slug } = Route.useParams();
-  const doctor = getDoctor(slug)!;
-  const others = doctors.filter((d) => d.slug !== doctor.slug);
+  const profile = getManagementProfile(slug)!;
+  const others = management.filter((m) => m.slug !== profile.slug);
 
   return (
-    <>
+    <main>
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
           <Link
-            to="/doctors"
+            to="/about/our-management"
             className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-sunny"
           >
             <ArrowLeft className="size-4" />
-            Our Doctors
+            Our Management
           </Link>
           <div className="mt-8 flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
-            <ProfileAvatar initials={doctor.initials} name={doctor.name} size="lg" />
+            <ProfileAvatar
+              photo={profile.photo}
+              initials={profile.initials}
+              name={profile.name}
+              size="lg"
+            />
             <div>
               <p className="text-sm font-bold uppercase tracking-widest text-sunny">
-                {doctor.role}
+                {profile.role}
               </p>
               <h1 className="mt-2 font-display text-3xl leading-tight sm:text-5xl">
-                {doctor.name}
+                {profile.name}
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-7 opacity-80 sm:text-base">
-                {doctor.credentials.join(" · ")}
+                {profile.org}
               </p>
             </div>
           </div>
@@ -98,23 +100,21 @@ function DoctorDetail() {
                 Qualifications
               </h2>
               <ul className="mt-4 grid gap-2.5">
-                {doctor.credentials.map((c) => (
+                {profile.credentials.map((c) => (
                   <li key={c} className="flex gap-2.5 text-sm leading-6 text-foreground">
                     <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
                     {c}
                   </li>
                 ))}
               </ul>
-              <Button asChild size="lg" className="mt-6 w-full">
-                <Link to="/contact" search={{ doctor: doctor.slug }} hash="appointment-form">
-                  Book Appointment
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="mt-3 w-full">
+              <Button asChild className="mt-6 w-full">
                 <a href={`tel:${clinic.phone}`}>
                   <Phone />
                   Call {clinic.phone}
                 </a>
+              </Button>
+              <Button asChild variant="outline" className="mt-3 w-full">
+                <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
           </aside>
@@ -123,26 +123,31 @@ function DoctorDetail() {
             <div>
               <SectionHeading eyebrow="Areas of expertise" title="Expertise & Focus Areas" />
               <div className="mt-6">
-                <TagList items={doctor.tags} />
+                <TagList items={profile.tags} />
               </div>
             </div>
 
             <div>
-              <SectionHeading eyebrow="Clinical focus" title="Highlights" />
+              <SectionHeading eyebrow="Career highlights" title="Key Achievements" />
               <div className="mt-6">
-                <HighlightList items={doctor.highlights} />
+                <HighlightList items={profile.highlights} />
               </div>
             </div>
 
             <div>
               <SectionHeading eyebrow="Profile" title="About" />
               <div className="mt-6 grid gap-5">
-                {doctor.bio.map((p, i) => (
+                {profile.bio.map((p, i) => (
                   <p key={i} className="leading-7 text-muted-foreground">
                     {p}
                   </p>
                 ))}
               </div>
+              {profile.closing && (
+                <blockquote className="mt-6 rounded-lg border-l-4 border-primary bg-soft p-6 text-lg font-medium italic leading-8 text-foreground">
+                  “{profile.closing}”
+                </blockquote>
+              )}
             </div>
           </div>
         </div>
@@ -151,10 +156,10 @@ function DoctorDetail() {
       {others.length > 0 && (
         <section className="section bg-soft">
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
-            <SectionHeading eyebrow="Our doctors" title="Meet the rest of the team" />
-            <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <SectionHeading eyebrow="Leadership" title="Meet the rest of the team" />
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
               {others.map((o) => (
-                <DoctorCard key={o.slug} doctor={o} />
+                <ManagementCard key={o.slug} profile={o} />
               ))}
             </div>
           </div>
@@ -162,6 +167,6 @@ function DoctorDetail() {
       )}
 
       <CtaBanner />
-    </>
+    </main>
   );
 }

@@ -2,11 +2,30 @@ import { Link } from "@tanstack/react-router";
 import { Award, CalendarDays, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/clinic";
-import { reviewLinks, type Doctor } from "@/lib/clinic-data";
+import { reviewLinks, type Doctor, type ManagementProfile } from "@/lib/clinic-data";
 import { useGoogleReviews } from "@/lib/use-google-reviews";
 
-export function ProfileAvatar({ initials, size = "md" }: { initials: string; size?: "md" | "lg" }) {
+export function ProfileAvatar({
+  photo,
+  initials,
+  name,
+  size = "md",
+}: {
+  photo?: string;
+  initials: string;
+  name: string;
+  size?: "md" | "lg";
+}) {
   const dim = size === "lg" ? "size-32 sm:size-40" : "size-20";
+  if (photo) {
+    return (
+      <img
+        src={photo}
+        alt={name}
+        className={`${dim} shrink-0 rounded-full bg-card object-cover shadow-lg ring-4 ring-primary-foreground/20`}
+      />
+    );
+  }
   return (
     <span
       className={`grid ${dim} shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary to-coral font-display font-bold text-primary-foreground shadow-lg ring-4 ring-primary-foreground/20 ${size === "lg" ? "text-4xl sm:text-5xl" : "text-lg"}`}
@@ -51,7 +70,7 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
   return (
     <Reveal>
       <article className="group flex flex-col items-center rounded-lg border border-border bg-card p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-        <ProfileAvatar initials={doctor.initials} />
+        <ProfileAvatar initials={doctor.initials} name={doctor.name} />
         <p className="mt-6 text-xs font-bold uppercase tracking-widest text-primary">
           {doctor.role}
         </p>
@@ -82,6 +101,38 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
             </Link>
           </Button>
         </div>
+      </article>
+    </Reveal>
+  );
+}
+
+export function ManagementCard({ profile }: { profile: ManagementProfile }) {
+  return (
+    <Reveal>
+      <article className="group flex flex-col items-center rounded-lg border border-border bg-card p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <ProfileAvatar photo={profile.photo} initials={profile.initials} name={profile.name} />
+        <p className="mt-6 text-xs font-bold uppercase tracking-widest text-primary">
+          {profile.role}
+        </p>
+        <h3 className="mt-2 font-display text-xl text-foreground">{profile.name}</h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          {profile.credentials.join(" · ")}
+        </p>
+        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+          {profile.tags.slice(0, 3).map((t) => (
+            <span
+              key={t}
+              className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-primary"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+        <Button asChild variant="outline" className="mt-6 w-full">
+          <Link to="/about/our-management/$slug" params={{ slug: profile.slug }}>
+            View Full Profile
+          </Link>
+        </Button>
       </article>
     </Reveal>
   );

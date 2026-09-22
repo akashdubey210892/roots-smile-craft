@@ -16,6 +16,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as AboutOurManagementRouteImport } from './routes/about_.our-management'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminCampaignsRouteImport } from './routes/admin.campaigns'
 import { Route as AdminDoctorsRouteImport } from './routes/admin.doctors'
@@ -24,6 +25,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin_.login'
 import { Route as DoctorsSlugRouteImport } from './routes/doctors.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as AboutOurManagementSlugRouteImport } from './routes/about_.our-management_.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +60,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutOurManagementRoute = AboutOurManagementRouteImport.update({
+  id: '/about_/our-management',
+  path: '/about/our-management',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -100,6 +107,11 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ServicesRoute,
 } as any)
+const AboutOurManagementSlugRoute = AboutOurManagementSlugRouteImport.update({
+  id: '/about_/our-management_/$slug',
+  path: '/about/our-management/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -109,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/doctors': typeof DoctorsRouteWithChildren
   '/reviews': typeof ReviewsRoute
   '/services': typeof ServicesRouteWithChildren
+  '/about/our-management': typeof AboutOurManagementRoute
   '/admin/campaigns': typeof AdminCampaignsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/offers': typeof AdminOffersRoute
@@ -117,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/about/our-management/$slug': typeof AboutOurManagementSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -124,6 +138,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/doctors': typeof DoctorsRouteWithChildren
   '/reviews': typeof ReviewsRoute
+  '/about/our-management': typeof AboutOurManagementRoute
   '/admin/campaigns': typeof AdminCampaignsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/offers': typeof AdminOffersRoute
@@ -132,6 +147,7 @@ export interface FileRoutesByTo {
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/about/our-management/$slug': typeof AboutOurManagementSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -142,6 +158,7 @@ export interface FileRoutesById {
   '/doctors': typeof DoctorsRouteWithChildren
   '/reviews': typeof ReviewsRoute
   '/services': typeof ServicesRouteWithChildren
+  '/about_/our-management': typeof AboutOurManagementRoute
   '/admin/campaigns': typeof AdminCampaignsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/offers': typeof AdminOffersRoute
@@ -150,6 +167,7 @@ export interface FileRoutesById {
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/about_/our-management_/$slug': typeof AboutOurManagementSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -161,6 +179,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/reviews'
     | '/services'
+    | '/about/our-management'
     | '/admin/campaigns'
     | '/admin/doctors'
     | '/admin/offers'
@@ -169,6 +188,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/admin/'
     | '/services/'
+    | '/about/our-management/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -176,6 +196,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/doctors'
     | '/reviews'
+    | '/about/our-management'
     | '/admin/campaigns'
     | '/admin/doctors'
     | '/admin/offers'
@@ -184,6 +205,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/admin'
     | '/services'
+    | '/about/our-management/$slug'
   id:
     | '__root__'
     | '/'
@@ -193,6 +215,7 @@ export interface FileRouteTypes {
     | '/doctors'
     | '/reviews'
     | '/services'
+    | '/about_/our-management'
     | '/admin/campaigns'
     | '/admin/doctors'
     | '/admin/offers'
@@ -201,6 +224,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/admin/'
     | '/services/'
+    | '/about_/our-management_/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -211,7 +235,9 @@ export interface RootRouteChildren {
   DoctorsRoute: typeof DoctorsRouteWithChildren
   ReviewsRoute: typeof ReviewsRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  AboutOurManagementRoute: typeof AboutOurManagementRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AboutOurManagementSlugRoute: typeof AboutOurManagementSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -263,6 +289,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about_/our-management': {
+      id: '/about_/our-management'
+      path: '/about/our-management'
+      fullPath: '/about/our-management'
+      preLoaderRoute: typeof AboutOurManagementRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -321,6 +354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/about_/our-management_/$slug': {
+      id: '/about_/our-management_/$slug'
+      path: '/about/our-management/$slug'
+      fullPath: '/about/our-management/$slug'
+      preLoaderRoute: typeof AboutOurManagementSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -373,7 +413,9 @@ const rootRouteChildren: RootRouteChildren = {
   DoctorsRoute: DoctorsRouteWithChildren,
   ReviewsRoute: ReviewsRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  AboutOurManagementRoute: AboutOurManagementRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AboutOurManagementSlugRoute: AboutOurManagementSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

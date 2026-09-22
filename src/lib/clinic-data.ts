@@ -6,6 +6,8 @@ import implants from "@/assets/services/implants.jpg";
 import rootCanal from "@/assets/services/root-canal.jpg";
 import crownBridge from "@/assets/services/crown-bridge.jpg";
 import cleaning from "@/assets/services/cleaning.jpg";
+import ceoPhoto from "@/assets/ceo.jpeg";
+import mdPhoto from "@/assets/md.jpeg";
 
 export const clinic = {
   name: "ROOTS DENTAL CLINIC",
@@ -525,3 +527,108 @@ export const reviewLinks = {
     ? `https://search.google.com/local/writereview?placeid=${googlePlaceId}`
     : "https://www.google.com/search?q=ROOTS+DENTAL+CLINIC+Yelahanka+reviews",
 };
+
+export type ManagementProfile = {
+  slug: string;
+  initials: string;
+  photo: string;
+  name: string;
+  role: string;
+  org: string;
+  credentials: string[];
+  tags: string[];
+  highlights: string[];
+  bio: string[];
+  closing?: string;
+};
+
+// Leadership of Anand Abhigyan Healthcare & Life Sciences, the group behind ROOTS
+// DENTAL CLINIC (shared with Vikshana Eye Hospital). Dr Suneela Kiran holds both
+// the Managing Director and HOD (ROOTS Dental Clinic) roles.
+export const management: ManagementProfile[] = [
+  {
+    slug: "kamal-kiran-yenamandra",
+    initials: "KK",
+    photo: ceoPhoto,
+    name: "Gp Capt (Dr) Kamal Kiran Yenamandra (Retd)",
+    role: "Chief Executive Officer",
+    org: "Anand Abhigyan Healthcare & Life Sciences",
+    credentials: [
+      "MBBS (AFMC)",
+      "MD Pediatrics",
+      "Trained in Pediatric Cardiology",
+      "National Instructor – PALS | NALS | BLS | ACLS | ATLS",
+    ],
+    tags: [
+      "Fetal Echocardiography",
+      "Hospital Administration",
+      "Medical Education",
+      "NABH & Quality Assurance",
+      "Emergency Medicine",
+      "Disaster Medicine",
+    ],
+    highlights: [
+      "Professor & Head, Department of Pediatrics – Command Hospital Air Force, Bengaluru",
+      "Examiner for NBE, RGUHS and MUHS",
+      "Commanded a 200-bedded Air Force Hospital",
+      "Medical Superintendent of a 400-bedded Air Force Hospital",
+      "National Instructor – PALS, NALS, BLS, ACLS and ATLS",
+      "Disaster-relief deployments: Sri Lanka Tsunami, Nepal earthquake, Srinagar earthquake",
+    ],
+    bio: [
+      "Gp Capt (Dr) Kamal Kiran Yenamandra (Retd) is a senior Pediatrician, healthcare leader, medical educator and former Indian Air Force medical officer with nearly three decades of experience spanning clinical medicine, hospital administration, healthcare management, medical education, quality assurance and emergency medicine.",
+      "An alumnus of the Armed Forces Medical College (AFMC), he completed his MD in Pediatrics from Mumbai and subsequently underwent advanced training in Pediatric Cardiology and Fetal Echocardiography. His special clinical interests include Allergy & Asthma, Developmental Pediatrics, Newborn Care and Preventive Child Health.",
+      "During his career with the Indian Air Force, he held several senior clinical, academic and leadership appointments, serving as Professor & Head of the Department of Pediatrics at Command Hospital Air Force, Bengaluru, and as an Examiner for NBE, RGUHS and MUHS.",
+      "His leadership experience extends well beyond clinical practice. He commanded a 200-bedded Air Force Hospital and served as Medical Superintendent of a 400-bedded Air Force Hospital, with responsibilities encompassing hospital operations, multidisciplinary healthcare delivery, clinical governance, manpower management, patient safety and quality systems.",
+      "Trained in NABH standards and Quality Assurance, he has a strong interest in building healthcare systems that combine clinical excellence with efficient processes, patient safety and a consistently high standard of patient experience.",
+      "A committed medical educator, he is a National Instructor in PALS, NALS, BLS, ACLS and ATLS, contributing extensively to the training of doctors and healthcare professionals in pediatric emergencies, neonatal resuscitation, cardiac life support and trauma care.",
+      "His Armed Forces service also included participation in major humanitarian assistance and disaster-relief operations, including the Sri Lanka Tsunami, Nepal earthquake and Srinagar earthquake, providing him with significant experience in disaster medicine, emergency response and healthcare delivery under challenging conditions.",
+      "As Chief Executive Officer of Anand Abhigyan Healthcare & Life Sciences, Dr Kamal Kiran brings together his experience as a clinician, hospital commander, medical superintendent, academician, instructor and healthcare administrator to build an integrated healthcare organisation centred on clinical quality, patient experience, professional development and innovation.",
+    ],
+    closing:
+      "Build strong systems, empower healthcare professionals and keep the patient at the centre of every decision.",
+  },
+  {
+    slug: "suneela-kiran",
+    initials: "SK",
+    photo: mdPhoto,
+    name: "Dr Suneela Kiran",
+    role: "Managing Director | HOD, ROOTS Dental Clinic",
+    org: "Anand Abhigyan Healthcare & Life Sciences",
+    credentials: [
+      "BDS",
+      "Healthcare Management",
+      "Clinical Data Management & CTRI",
+      "Trained in Microscopic Endodontics",
+    ],
+    tags: [
+      "Dental Surgery (BDS)",
+      "Microscopic Endodontics",
+      "Healthcare Administration",
+      "Clinical Governance",
+      "Clinical Data Management",
+      "CTRI Processes",
+      "Patient Experience",
+      "Team Coordination",
+    ],
+    highlights: [
+      "BDS, 1998 – Rajah Muthiah Dental College",
+      "28 years of clinical experience",
+      "Associated with Indian Air Force Dental Centres and ECHS healthcare facilities",
+      "Trained in Microscopic Endodontics",
+      "Expertise in Clinical Data Management and Clinical Trials Registry–India (CTRI)",
+    ],
+    bio: [
+      "Dr Suneela Kiran is the Managing Director of Anand Abhigyan Healthcare & Life Sciences, and Head of Department at ROOTS Dental Clinic, bringing 28 years of clinical experience together with extensive exposure to healthcare management, clinical operations and patient-centred healthcare delivery.",
+      "She completed her Bachelor of Dental Surgery (BDS) in 1998 from Rajah Muthiah Dental College. Over the course of her professional journey, she has worked across different parts of India and has been associated with Indian Air Force Dental Centres and Ex-Servicemen Contributory Health Scheme (ECHS) healthcare facilities, providing her with exposure to diverse clinical environments, patient populations and organised healthcare systems.",
+      "Her clinical experience spans nearly three decades, and she is also trained in Microscopic Endodontics, reflecting her continued engagement with contemporary and precision-based dental practice.",
+      "Beyond dentistry, Dr Suneela has developed substantial experience in healthcare administration and management, including hospital operations, clinical governance, quality and patient-safety processes, multidisciplinary team coordination, patient experience and healthcare service development.",
+      "She also has expertise in Clinical Data Management and Clinical Trials Registry–India (CTRI) processes, complementing her clinical and managerial experience with an understanding of structured clinical documentation, research processes and data-driven healthcare systems.",
+      "As Managing Director of Anand Abhigyan and Head of Department at ROOTS Dental Clinic, she is actively involved in the organisation's strategic development and operational governance, as well as the day-to-day clinical leadership of ROOTS, working to strengthen quality, efficiency, clinical standards and patient experience.",
+    ],
+    closing:
+      "Bringing together the perspectives of a clinician, healthcare administrator and organisational leader, backed by nearly three decades of experience across diverse healthcare settings.",
+  },
+];
+
+export const getManagementProfile = (slug: string) => management.find((m) => m.slug === slug);

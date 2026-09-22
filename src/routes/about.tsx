@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, HeartHandshake, ScanLine, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CtaBanner, PageHero, Reveal, SectionHeading } from "@/components/clinic";
+import { ManagementCard } from "@/components/site-extras";
+import { management } from "@/lib/clinic-data";
 import consultation from "@/assets/patient-consultation.jpg";
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -25,7 +27,6 @@ export const Route = createFileRoute("/about")({
   component: About,
 });
 function About() {
-  const leaders = ["CEO", "Managing Director (MD)", "Head of Department (HOD)"];
   const values = [
     { Icon: ShieldCheck, label: "Ethical care" },
     { Icon: ScanLine, label: "Considered diagnosis" },
@@ -82,32 +83,19 @@ function About() {
             centered
             eyebrow="Leadership"
             title="Our Management"
-            text="Profile details below are editable placeholders and will be updated when the clinic provides confirmed information."
+            text="The leadership team guiding ROOTS DENTAL CLINIC's clinical standards and patient care."
           />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {leaders.map((role, i) => (
-              <Reveal key={role} delay={i * 100}>
-                <article className="service-card">
-                  <div className="grid aspect-[4/3] place-items-center bg-accent">
-                    <span className="grid size-24 place-items-center rounded-full bg-background text-3xl font-display text-primary">
-                      {i + 1}
-                    </span>
-                  </div>
-                  <div className="p-7">
-                    <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">
-                      {role}
-                    </p>
-                    <h3 className="mt-3 font-display text-2xl">Name to be confirmed</h3>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                      Biography, qualifications and areas of expertise will be added after the
-                      clinic provides verified details.
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mx-auto lg:max-w-3xl">
+            {management.map((profile) => (
+              <ManagementCard key={profile.slug} profile={profile} />
             ))}
           </div>
-          <div className="mt-10 text-center">
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Button asChild variant="outline">
+              <Link to="/about/our-management">
+                View Full Leadership Team <ArrowRight />
+              </Link>
+            </Button>
             <Button asChild variant="outline">
               <Link to="/doctors">
                 Meet Our Doctors <ArrowRight />
