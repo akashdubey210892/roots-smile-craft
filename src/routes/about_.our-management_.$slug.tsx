@@ -75,8 +75,12 @@ function ProfileDetail() {
             <span className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full bg-primary/10 blur-3xl" />
             <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
               <div className="relative min-h-[360px] overflow-hidden bg-soft sm:min-h-[440px] lg:min-h-[600px]">
-                <img src={profile.photo} alt={profile.name} className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/85 via-primary/10 to-transparent" />
+                <img
+                  src={profile.photo}
+                  alt={profile.name}
+                  className="absolute inset-0 size-full object-contain object-center p-3 sm:p-5 lg:p-6 transition-transform duration-700 hover:scale-[1.01]"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/5 to-transparent" />
                 <div className="absolute left-6 top-6 rounded-full bg-background/90 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.15em] text-primary shadow-sm backdrop-blur">
                   Our Leadership
                 </div>
