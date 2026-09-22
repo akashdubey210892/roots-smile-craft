@@ -52,8 +52,8 @@ function OurManagement() {
       </section>
 
       <section className="relative -mt-2 bg-soft pb-16 sm:pb-20">
-        <div className="mx-auto max-w-[1600px] px-5 lg:px-10 xl:px-12">
-          <div className="grid items-stretch gap-6 lg:grid-cols-2 xl:gap-8">
+        <div className="mx-auto max-w-[1600px] px-5 lg:px-10 xl:px-14">
+          <div className="grid gap-8 lg:grid-cols-2">
             {management.map((profile) => (
               <ManagementCard key={profile.slug} profile={profile} compact />
             ))}
