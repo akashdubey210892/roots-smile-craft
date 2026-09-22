@@ -5,6 +5,7 @@ import { CtaBanner, PageHero, Reveal, SectionHeading } from "@/components/clinic
 import { ManagementCard } from "@/components/site-extras";
 import { management } from "@/lib/clinic-data";
 import consultation from "@/assets/patient-consultation.jpg";
+
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
@@ -26,12 +27,14 @@ export const Route = createFileRoute("/about")({
   }),
   component: About,
 });
+
 function About() {
   const values = [
     { Icon: ShieldCheck, label: "Ethical care" },
     { Icon: ScanLine, label: "Considered diagnosis" },
     { Icon: HeartHandshake, label: "Patient-first planning" },
   ];
+
   return (
     <main>
       <PageHero
@@ -39,6 +42,7 @@ function About() {
         title="Dentistry built on strong foundations"
         text="A patient-first approach shaped by prevention, accurate diagnosis, personalized treatment and long-term oral health."
       />
+
       <section className="section">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
           <Reveal>
@@ -77,6 +81,7 @@ function About() {
           </Reveal>
         </div>
       </section>
+
       <section className="section bg-soft">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
@@ -85,11 +90,13 @@ function About() {
             title="Our Management"
             text="The leadership team guiding ROOTS DENTAL CLINIC's clinical standards and patient care."
           />
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mx-auto lg:max-w-3xl">
+
+          <div className="mx-auto mt-12 grid max-w-6xl gap-6 sm:grid-cols-2">
             {management.map((profile) => (
-              <ManagementCard key={profile.slug} profile={profile} />
+              <ManagementCard key={profile.slug} profile={profile} compact />
             ))}
           </div>
+
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Button asChild variant="outline">
               <Link to="/about/our-management">
@@ -104,6 +111,7 @@ function About() {
           </div>
         </div>
       </section>
+
       <CtaBanner />
     </main>
   );
