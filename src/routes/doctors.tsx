@@ -1,24 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarDays, UserRound } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CtaBanner, PageHero, Reveal } from "@/components/clinic";
-const specialties = [
-  "General Dentistry",
-  "Endodontics",
-  "Orthodontics",
-  "Pediatric Dentistry",
-  "Prosthodontics",
-  "Implant Dentistry",
-  "Oral Surgery",
-];
-const profiles = [
-  "General Dentistry",
-  "Endodontics",
-  "Orthodontics",
-  "Pediatric Dentistry",
-  "Prosthodontics",
-  "Implant Dentistry",
-];
+import { createFileRoute } from "@tanstack/react-router";
+import { CtaBanner, PageHero, SectionHeading } from "@/components/clinic";
+import { DoctorCard } from "@/components/site-extras";
+import { doctors } from "@/lib/clinic-data";
+
 export const Route = createFileRoute("/doctors")({
   head: () => ({
     meta: [
@@ -31,7 +15,7 @@ export const Route = createFileRoute("/doctors")({
       { property: "og:title", content: "Our Doctors | ROOTS DENTAL CLINIC" },
       {
         property: "og:description",
-        content: "Explore the dental specialties available at ROOTS in Yelahanka.",
+        content: "Explore the dental care team at ROOTS in Yelahanka.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -40,65 +24,25 @@ export const Route = createFileRoute("/doctors")({
   }),
   component: Doctors,
 });
+
 function Doctors() {
   return (
     <main>
       <PageHero
         eyebrow="Our doctors"
         title="A team focused on thoughtful, personalized care"
-        text="This page is structured for the clinic's verified doctor profiles. Names, qualifications and experience remain clearly marked until confirmed."
+        text="Meet the dental care team at ROOTS in Yelahanka. Verified names and photos will replace these placeholder profiles soon."
       />
       <section className="section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="flex flex-wrap gap-2">
-            {specialties.map((s) => (
-              <span
-                key={s}
-                className="rounded-full border bg-background px-4 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
+          <SectionHeading
+            eyebrow="Meet the team"
+            title="Our dental care team"
+            text="Placeholder profiles for now — real names, qualifications and photos are on the way."
+          />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {profiles.map((specialty, i) => (
-              <Reveal key={specialty} delay={(i % 3) * 100}>
-                <article className="service-card">
-                  <div className="grid aspect-[4/3] place-items-center bg-soft">
-                    <div className="grid size-24 place-items-center rounded-full bg-accent text-primary">
-                      <UserRound className="size-11" />
-                    </div>
-                  </div>
-                  <div className="p-7">
-                    <p className="text-xs font-bold uppercase tracking-[.15em] text-primary">
-                      {specialty}
-                    </p>
-                    <h2 className="mt-3 font-display text-2xl">Doctor name to be confirmed</h2>
-                    <dl className="mt-5 grid gap-3 text-sm">
-                      <div>
-                        <dt className="font-semibold">Qualifications</dt>
-                        <dd className="text-muted-foreground">Verified details to be added</dd>
-                      </div>
-                      <div>
-                        <dt className="font-semibold">Experience</dt>
-                        <dd className="text-muted-foreground">To be confirmed</dd>
-                      </div>
-                      <div>
-                        <dt className="font-semibold">Areas of expertise</dt>
-                        <dd className="text-muted-foreground">
-                          Confirmed clinical focus to be added
-                        </dd>
-                      </div>
-                    </dl>
-                    <Button asChild variant="hero" className="mt-7 w-full">
-                      <Link to="/contact">
-                        <CalendarDays />
-                        Book Appointment
-                      </Link>
-                    </Button>
-                  </div>
-                </article>
-              </Reveal>
+            {doctors.map((doctor) => (
+              <DoctorCard key={doctor.slug} doctor={doctor} />
             ))}
           </div>
         </div>

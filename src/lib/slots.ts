@@ -1,0 +1,59 @@
+export const OPEN_MINUTES = 9 * 60; // 9:00 AM
+export const CLOSE_MINUTES = 20 * 60; // 8:00 PM
+export const SLOT_MINUTES = 15;
+
+/** All possible slot start times for a day, as "HH:mm", 9:00 AM through 7:45 PM. */
+export function allDaySlots(): string[] {
+  const slots: string[] = [];
+  for (let m = OPEN_MINUTES; m < CLOSE_MINUTES; m += SLOT_MINUTES) {
+    const h = Math.floor(m / 60)
+      .toString()
+      .padStart(2, "0");
+    const mm = (m % 60).toString().padStart(2, "0");
+    slots.push(`${h}:${mm}`);
+  }
+  return slots;
+}
+
+/** "14:15" -> "2:15 PM" */
+export function formatSlotLabel(time: string): string {
+  const [hStr, mStr] = time.split(":");
+  const h = Number(hStr);
+  const period = h >= 12 ? "PM" : "AM";
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12}:${mStr} ${period}`;
+}
+
+/** Today's date as "YYYY-MM-DD" in local time. */
+export function todayIso(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = (d.getMonth() + 1).toString().padStart(2, "0");
+  const day = d.getDate().toString().padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+/** Minutes since midnight right now, local time. */
+export function nowMinutes(): number {
+  const d = new Date();
+  return d.getHours() * 60 + d.getMinutes();
+}
+
+/** "2026-08-23" + 1 -> "2026-08-24" */
+export function addDaysIso(iso: string, days: number): string {
+  const d = new Date(iso + "T00:00:00");
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = (d.getMonth() + 1).toString().padStart(2, "0");
+  const day = d.getDate().toString().padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+export const DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
+export type DayKey = (typeof DAY_KEYS)[number];
+
+/** "2026-08-23" -> "sun" (JS getDay(): 0=Sun..6=Sat, remapped to our Mon-first keys) */
+export function dayKeyForIso(iso: string): DayKey {
+  const jsDay = new Date(iso + "T00:00:00").getDay();
+  return DAY_KEYS[(jsDay + 6) % 7]!;
+}

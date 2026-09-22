@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   ArrowRight,
   CalendarDays,
@@ -29,6 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useReveal } from "@/hooks/use-reveal";
 import { clinic, featuredSlugs, services, type Service } from "@/lib/clinic-data";
+import logoIcon from "@/assets/roots-logo-icon.png";
 
 export function Reveal({
   children,
@@ -54,9 +55,11 @@ export function Reveal({
 export function Logo({ inverse = false }: { inverse?: boolean }) {
   return (
     <Link to="/" className="group flex items-center gap-3" aria-label="ROOTS Dental Clinic home">
-      <span className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground shadow-sm transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-110">
-        <span className="text-xl font-bold">R</span>
-      </span>
+      <img
+        src={logoIcon}
+        alt=""
+        className="size-11 shrink-0 object-contain transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-110"
+      />
       <span>
         <strong
           className={`block font-display text-lg leading-none ${inverse ? "text-footer-foreground" : "text-foreground"}`}
@@ -78,6 +81,7 @@ const nav = [
   { label: "About Us", to: "/about" as const },
   { label: "Our Doctors", to: "/doctors" as const },
   { label: "Our Services", to: "/services" as const },
+  { label: "Reviews", to: "/reviews" as const },
   { label: "Contact Us", to: "/contact" as const },
 ];
 
@@ -452,97 +456,6 @@ export function CtaBanner() {
         </div>
       </Reveal>
     </section>
-  );
-}
-
-export function AppointmentForm() {
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
-  function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    if (!data.get("name") || !data.get("mobile") || !data.get("date") || !data.get("service")) {
-      setError("Please complete the required fields.");
-      return;
-    }
-    setError("");
-    setSent(true);
-    e.currentTarget.reset();
-  }
-  if (sent)
-    return (
-      <div className="animate-pop rounded-3xl border border-success/30 bg-success-soft p-8 text-center">
-        <span className="mx-auto grid size-14 place-items-center rounded-full bg-success text-success-foreground">
-          <Check />
-        </span>
-        <h2 className="mt-4 font-display text-2xl">Request received</h2>
-        <p className="mt-2 text-muted-foreground">
-          Thank you. The clinic team will contact you to discuss availability and confirm your
-          appointment.
-        </p>
-        <Button className="mt-5" variant="outline" onClick={() => setSent(false)}>
-          Send another request
-        </Button>
-      </div>
-    );
-  return (
-    <form onSubmit={submit} className="grid gap-5" noValidate>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Name *">
-          <input name="name" className="field" placeholder="Your full name" />
-        </Field>
-        <Field label="Mobile Number *">
-          <input name="mobile" inputMode="tel" className="field" placeholder="10-digit number" />
-        </Field>
-        <Field label="Email">
-          <input name="email" type="email" className="field" placeholder="you@example.com" />
-        </Field>
-        <Field label="Preferred Date *">
-          <input name="date" type="date" className="field" />
-        </Field>
-        <Field label="Preferred Time">
-          <input name="time" type="time" className="field" />
-        </Field>
-        <Field label="Service / Treatment *">
-          <select name="service" className="field">
-            <option value="">Select a service</option>
-            {services.map((s) => (
-              <option key={s.slug} value={s.title}>
-                {s.title}
-              </option>
-            ))}
-          </select>
-        </Field>
-      </div>
-      <Field label="Message">
-        <textarea
-          name="message"
-          rows={4}
-          className="field resize-none"
-          placeholder="Tell us briefly how we can help"
-        />
-      </Field>
-      {error && (
-        <p className="text-sm font-medium text-destructive" role="alert">
-          {error}
-        </p>
-      )}
-      <Button type="submit" variant="hero" size="lg" className="w-fit">
-        Request an Appointment <ArrowRight />
-      </Button>
-      <p className="text-xs leading-5 text-muted-foreground">
-        Submitting this form does not automatically confirm an appointment. ROOTS DENTAL CLINIC will
-        contact you to discuss and confirm availability.
-      </p>
-    </form>
-  );
-}
-function Field({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <label className="grid gap-2 text-sm font-semibold text-foreground">
-      <span>{label}</span>
-      {children}
-    </label>
   );
 }
 

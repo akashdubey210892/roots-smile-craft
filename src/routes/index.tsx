@@ -10,6 +10,7 @@ import {
   trustItems,
 } from "@/components/clinic";
 import { clinic, services } from "@/lib/clinic-data";
+import { OffersSection, CampaignsSection } from "@/components/promotions";
 import hero from "@/assets/roots-hero.jpg";
 import consultation from "@/assets/patient-consultation.jpg";
 
@@ -139,6 +140,8 @@ function Index() {
         </div>
       </section>
 
+      <OffersSection />
+
       <section className="section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
@@ -206,6 +209,8 @@ function Index() {
           </div>
         </div>
       </section>
+
+      <CampaignsSection />
 
       <section className="section bg-soft">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
