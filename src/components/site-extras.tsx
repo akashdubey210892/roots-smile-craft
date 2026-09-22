@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Award, CalendarDays, GraduationCap, Sparkles, Star } from "lucide-react";
+import { Award, CalendarDays, CheckCircle2, GraduationCap, Heart, Sparkles, Star, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/clinic";
 import { reviewLinks, type ManagementProfile } from "@/lib/clinic-data";
@@ -118,32 +118,89 @@ export function DoctorCard({ doctor }: { doctor: DoctorProfile }) {
 }
 
 export function ManagementCard({ profile }: { profile: ManagementProfile }) {
+  const shortCredentials = profile.credentials.slice(0, 3);
+  const shortTags = profile.tags.slice(0, 3);
+  const isMedicalLeader = profile.slug.includes("kamal");
+
   return (
     <Reveal>
-      <article className="group flex flex-col items-center rounded-lg border border-border bg-card p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-        <ProfileAvatar photo={profile.photo} initials={profile.initials} name={profile.name} />
-        <p className="mt-6 text-xs font-bold uppercase tracking-widest text-primary">
-          {profile.role}
-        </p>
-        <h3 className="mt-2 font-display text-xl text-foreground">{profile.name}</h3>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          {profile.credentials.join(" · ")}
-        </p>
-        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-          {profile.tags.slice(0, 3).map((t) => (
-            <span
-              key={t}
-              className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-primary"
-            >
-              {t}
-            </span>
-          ))}
+      <article className="group relative overflow-hidden rounded-[2rem] border border-primary/15 bg-card shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium">
+        <div className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full bg-primary/10 blur-3xl transition-transform duration-700 group-hover:scale-150" />
+        <div className="grid lg:grid-cols-[minmax(230px,0.8fr)_1.2fr]">
+          <div className="relative min-h-[300px] overflow-hidden bg-soft lg:min-h-[360px]">
+            <img
+              src={profile.photo}
+              alt={profile.name}
+              className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
+            <div className="absolute left-5 top-5 rounded-full bg-background/90 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary shadow-sm backdrop-blur">
+              {isMedicalLeader ? "Leadership" : "Dental Leadership"}
+            </div>
+            <div className="absolute bottom-5 left-5 right-5 text-primary-foreground">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-sunny">
+                <Heart className="size-3.5 fill-current" />
+                ROOTS Leadership
+              </div>
+              <p className="mt-2 max-w-xs font-display text-xl leading-tight">
+                {isMedicalLeader ? "Building stronger healthcare systems." : "Creating healthier, happier smiles."}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col p-6 sm:p-8 lg:p-9">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-primary">
+                  <Stethoscope className="size-4" />
+                  {profile.role}
+                </p>
+                <h3 className="mt-3 max-w-xl font-display text-2xl leading-tight text-foreground sm:text-3xl">
+                  {profile.name}
+                </h3>
+              </div>
+              <span className="hidden size-10 shrink-0 place-items-center rounded-full bg-accent text-primary sm:grid">
+                <Sparkles className="size-4" />
+              </span>
+            </div>
+
+            <p className="mt-4 line-clamp-3 text-sm leading-6 text-muted-foreground">
+              {profile.bio[0]}
+            </p>
+
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              {shortCredentials.map((credential) => (
+                <div key={credential} className="flex items-start gap-2 rounded-xl bg-soft/70 px-3 py-2.5 text-xs leading-5 text-foreground">
+                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                  {credential}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {shortTags.map((tag) => (
+                <span key={tag} className="rounded-full bg-accent px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wide text-primary">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Button asChild variant="hero" className="flex-1">
+                <Link to="/about/our-management/$slug" params={{ slug: profile.slug }}>
+                  View Full Profile
+                  <Sparkles />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="sm:px-5">
+                <Link to="/contact" hash="appointment-form">
+                  <CalendarDays />
+                  Appointment
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
-        <Button asChild variant="outline" className="mt-6 w-full">
-          <Link to="/about/our-management/$slug" params={{ slug: profile.slug }}>
-            View Full Profile
-          </Link>
-        </Button>
       </article>
     </Reveal>
   );
