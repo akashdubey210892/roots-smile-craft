@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ArrowRight, CalendarDays, Check, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarDays, Check, ChevronDown, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { services, type Service } from "@/lib/clinic-data";
 import { cn } from "@/lib/utils";
 
@@ -12,12 +13,16 @@ const featuredSlugs = [
   "braces",
   "smile-design",
   "pediatric-dentistry",
+  "minor-surgical-procedures",
   "periodontal-treatment",
   "root-canal-treatment",
   "crown-and-bridge",
+  "complete-denture",
+  "removable-partial-denture",
   "implants",
   "wisdom-teeth-extraction",
-  "dental-cleaning",
+  "tmj",
+  "orofacial-pain",
 ];
 
 function serviceImage(service: Service) {
@@ -50,8 +55,9 @@ export function InteractiveServices() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-[310px_1fr] lg:items-start">
-          <div className="rounded-3xl border border-border/70 bg-background/90 p-3 shadow-soft backdrop-blur-sm lg:sticky lg:top-28">
+        <div className="mt-12 lg:grid lg:grid-cols-[310px_1fr] lg:items-start lg:gap-5">
+          {/* Desktop treatment navigation */}
+          <div className="hidden rounded-3xl border border-border/70 bg-background/90 p-3 shadow-soft backdrop-blur-sm lg:sticky lg:top-28 lg:block">
             <div className="mb-3 px-3 pt-2 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
               Explore treatments
             </div>
@@ -81,7 +87,12 @@ export function InteractiveServices() {
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-display text-base">{service.title}</span>
-                      <span className={cn("mt-0.5 block text-xs line-clamp-1", selected ? "text-primary-foreground/75" : "text-muted-foreground")}>
+                      <span
+                        className={cn(
+                          "mt-0.5 block text-xs line-clamp-1",
+                          selected ? "text-primary-foreground/75" : "text-muted-foreground",
+                        )}
+                      >
                         {service.short}
                       </span>
                     </span>
@@ -92,7 +103,30 @@ export function InteractiveServices() {
             </div>
           </div>
 
-          <article key={active.slug} className="animate-rise overflow-hidden rounded-3xl border border-border/70 bg-background shadow-premium">
+          {/* Mobile treatment navigation: compact selector keeps the selected details immediately visible. */}
+          <div className="mb-5 lg:hidden">
+            <label className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Choose a treatment
+            </label>
+            <Select value={active.slug} onValueChange={setActiveSlug}>
+              <SelectTrigger className="h-14 rounded-2xl border-border/70 bg-background px-4 text-left shadow-soft">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {available.map((service) => (
+                  <SelectItem key={service.slug} value={service.slug}>
+                    {service.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div className="mt-2 flex items-center gap-2 px-1 text-xs text-muted-foreground">
+              <ChevronDown className="size-3.5 text-primary" />
+              Tap the selector to explore all 16 services
+            </div>
+          </div>
+
+          <article key={active.slug} className="animate-rise overflow-hidden rounded-3xl border border-border/70 bg-background shadow-premium lg:col-start-2">
             <div className="grid lg:grid-cols-[.9fr_1.1fr]">
               <div className="relative min-h-[300px] overflow-hidden sm:min-h-[440px]">
                 <img
