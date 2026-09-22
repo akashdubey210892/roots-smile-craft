@@ -1,5 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CalendarDays, Mail, MapPin, Phone, Smile, Sparkles, Star } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  Heart,
+  Mail,
+  MapPin,
+  Phone,
+  Smile,
+  Sparkles,
+  Star,
+  Stethoscope,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   CtaBanner,
@@ -9,7 +20,9 @@ import {
   ServicesSlider,
   trustItems,
 } from "@/components/clinic";
+import { DoctorCard } from "@/components/site-extras";
 import { clinic, services } from "@/lib/clinic-data";
+import { useDoctors } from "@/lib/doctors";
 import { OffersSection, CampaignsSection } from "@/components/promotions";
 import hero from "@/assets/roots-hero.jpg";
 import consultation from "@/assets/patient-consultation.jpg";
@@ -72,6 +85,8 @@ const trustColors = {
 } as const;
 
 function Index() {
+  const { doctors, loading: doctorsLoading } = useDoctors();
+
   return (
     <main>
       <section className="relative min-h-[680px] overflow-hidden bg-soft lg:min-h-[720px]">
@@ -107,6 +122,17 @@ function Index() {
           className="animate-float pointer-events-none absolute left-[8%] bottom-[14%] size-7 text-primary/70 drop-shadow-sm sm:left-[22%] sm:size-9"
           style={{ animationDelay: "2s" }}
         />
+        <Stethoscope
+          aria-hidden="true"
+          className="animate-float-slow pointer-events-none absolute right-[7%] top-[23%] size-7 rotate-12 text-primary/35 drop-shadow-sm sm:right-[17%] sm:top-[20%] sm:size-10"
+          style={{ animationDelay: "0.8s" }}
+        />
+        <Heart
+          aria-hidden="true"
+          className="animate-float pointer-events-none absolute right-[9%] bottom-[18%] size-6 fill-coral/20 text-coral/65 drop-shadow-sm sm:right-[24%] sm:size-8"
+          style={{ animationDelay: "2.6s" }}
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-background/20 to-transparent" />
         <div className="relative mx-auto flex min-h-[680px] max-w-7xl items-center px-5 py-20 lg:min-h-[720px] lg:px-8">
           <div className="max-w-2xl animate-rise">
             <span className="pill-badge text-primary">
@@ -124,15 +150,16 @@ function Index() {
               treatment for every patient.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild variant="hero" size="lg">
+              <Button asChild variant="hero" size="lg" className="group">
                 <Link to="/contact">
-                  <CalendarDays />
+                  <CalendarDays className="transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" />
                   Book an Appointment
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="group">
                 <Link to="/services">
-                  Explore Our Services <ArrowRight />
+                  Explore Our Services
+                  <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -160,6 +187,9 @@ function Index() {
           className="pointer-events-none absolute -right-16 top-1/2 size-72 -translate-y-1/2 bg-primary/10 blob-shape blur-3xl"
           aria-hidden="true"
         />
+        <div className="pointer-events-none absolute left-[7%] top-16 animate-float text-coral/30" aria-hidden="true">
+          <Sparkles className="size-8" />
+        </div>
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
             centered
@@ -188,6 +218,56 @@ function Index() {
         </div>
       </section>
 
+      <section className="section relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute -left-20 top-24 size-64 bg-sunny/25 blob-shape blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute right-[8%] top-12 animate-float-slow text-primary/20"
+          aria-hidden="true"
+        >
+          <Star className="size-9 fill-current" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+            <SectionHeading
+              eyebrow="Our doctors"
+              title="Meet the people behind your smile"
+              text="Get to know the dental professionals at ROOTS and choose the right doctor for your appointment."
+            />
+            <Button asChild variant="outline" className="group shrink-0">
+              <Link to="/doctors">
+                Meet All Doctors
+                <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
+          {doctorsLoading ? (
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label="Loading doctors">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-[430px] animate-pulse rounded-3xl border border-border bg-muted/50" />
+              ))}
+            </div>
+          ) : doctors.length === 0 ? (
+            <Reveal className="mt-10 rounded-3xl border border-dashed border-border bg-soft p-8 text-center">
+              <p className="font-display text-xl">Our doctor profiles are coming soon.</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Please check our doctors page for the latest team information.
+              </p>
+            </Reveal>
+          ) : (
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {doctors.slice(0, 3).map((doctor, i) => (
+                <div key={doctor.id} className="animate-pop" style={{ animationDelay: `${i * 120}ms` }}>
+                  <DoctorCard doctor={doctor} />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       <section className="section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
@@ -196,9 +276,10 @@ function Index() {
               title="Care for every stage of your smile"
               text="From prevention and restoration to orthodontic and replacement options."
             />
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="group shrink-0">
               <Link to="/services">
-                View All Services <ArrowRight />
+                View All Services
+                <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
           </div>
@@ -221,7 +302,7 @@ function Index() {
               width={1400}
               height={1000}
               loading="lazy"
-              className="aspect-[7/5] w-full rounded-3xl object-cover shadow-premium"
+              className="aspect-[7/5] w-full rounded-3xl object-cover shadow-premium transition-transform duration-700 hover:scale-[1.015]"
             />
           </Reveal>
           <Reveal delay={120}>
@@ -234,9 +315,10 @@ function Index() {
               and surgical procedures, ROOTS DENTAL CLINIC is committed to providing safe, ethical
               and personalized dental care.
             </p>
-            <Button asChild variant="hero" className="mt-8">
+            <Button asChild variant="hero" className="mt-8 group">
               <Link to="/about">
-                Discover our approach <ArrowRight />
+                Discover our approach
+                <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
           </Reveal>
