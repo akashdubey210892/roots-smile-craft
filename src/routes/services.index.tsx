@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CtaBanner, PageHero, ServiceCard } from "@/components/clinic";
-import { services } from "@/lib/clinic-data";
+import { CtaBanner } from "@/components/clinic";
+import { InteractiveServices } from "@/components/interactive-services";
+
 export const Route = createFileRoute("/services/")({
   head: () => ({
     meta: [
@@ -8,12 +9,12 @@ export const Route = createFileRoute("/services/")({
       {
         name: "description",
         content:
-          "Explore general dentistry, root canal treatment, implants, braces, aligners, pediatric dentistry and more in Yelahanka.",
+          "Explore general dentistry, restoration, root canal treatment, implants, braces, aligners, pediatric dentistry and more at ROOTS Dental Clinic in Yelahanka.",
       },
       { property: "og:title", content: "Our Dental Services | ROOTS DENTAL CLINIC" },
       {
         property: "og:description",
-        content: "Comprehensive, personalized dental treatments in Yelahanka, Bengaluru.",
+        content: "Explore comprehensive, personalized dental treatments in Yelahanka, Bengaluru.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -22,21 +23,11 @@ export const Route = createFileRoute("/services/")({
   }),
   component: ServicesPage,
 });
+
 function ServicesPage() {
   return (
     <main>
-      <PageHero
-        eyebrow="Our services"
-        title="Complete dental care, thoughtfully planned"
-        text="Explore preventive, restorative, orthodontic, cosmetic and surgical dental care. Every recommendation begins with an individual clinical assessment."
-      />
-      <section className="section">
-        <div className="mx-auto grid max-w-7xl gap-6 px-5 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
-          {services.map((s, i) => (
-            <ServiceCard key={s.slug} service={s} delay={(i % 3) * 90} />
-          ))}
-        </div>
-      </section>
+      <InteractiveServices />
       <CtaBanner />
     </main>
   );
