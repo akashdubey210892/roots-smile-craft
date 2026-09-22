@@ -3,6 +3,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Doctor profiles are public so the website and booking flow can read them.
+    // Only authenticated staff/admin users can create, update, or delete profiles.
+    match /doctors/{doctorId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+
     // Publicly readable booked slots.
     // Clients can create a slot but cannot modify or delete it.
     //
@@ -99,6 +106,7 @@ service cloud.firestore {
         && d.get('description', '') is string && d.get('description', '').size() <= 1000
         && d.get('couponCode', '') is string && d.get('couponCode', '').size() <= 40
         && d.get('websiteUrl', '') is string && d.get('websiteUrl', '').size() <= 500
+        && d.get('terms', '') is string && d.get('terms', '').size() <= 5000
         && d.get('terms', '') is string && d.get('terms', '').size() <= 5000
         && d.createdAt == request.time;
     }
