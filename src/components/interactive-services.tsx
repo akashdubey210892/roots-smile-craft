@@ -1,123 +1,173 @@
 import { useState } from "react";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarDays, Check, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { services, type Service } from "@/lib/clinic-data";
+import { cn } from "@/lib/utils";
 
-const featuredServices = services.slice(0, 6);
+const featuredSlugs = [
+  "general-dentistry",
+  "restoration",
+  "aligners",
+  "braces",
+  "smile-design",
+  "pediatric-dentistry",
+  "periodontal-treatment",
+  "root-canal-treatment",
+  "crown-and-bridge",
+  "implants",
+  "wisdom-teeth-extraction",
+  "dental-cleaning",
+];
+
+function serviceImage(service: Service) {
+  return service.image;
+}
 
 export function InteractiveServices() {
-  const [activeSlug, setActiveSlug] = useState(featuredServices[0]?.slug ?? "");
-  const active: Service =
-    featuredServices.find((service) => service.slug === activeSlug) ?? featuredServices[0];
+  const available = featuredSlugs
+    .map((slug) => services.find((service) => service.slug === slug))
+    .filter((service): service is Service => Boolean(service));
+  const [activeSlug, setActiveSlug] = useState(available[0]?.slug ?? "");
+  const active = available.find((service) => service.slug === activeSlug) ?? available[0];
 
   if (!active) return null;
 
   return (
-    <section className="section relative overflow-hidden bg-soft">
-      <div className="pointer-events-none absolute -left-16 top-12 size-48 rounded-full bg-sunny/25 blur-3xl" />
-      <div className="pointer-events-none absolute -right-16 bottom-10 size-56 rounded-full bg-primary/10 blur-3xl" />
+    <section className="relative overflow-hidden bg-soft py-16 sm:py-20 lg:py-24">
+      <div className="pointer-events-none absolute -left-24 top-16 size-72 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-10 size-80 rounded-full bg-coral/10 blur-3xl" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow">Explore your care</span>
-          <h2 className="mt-3 font-display text-3xl text-foreground sm:text-4xl">
-            Find the right care for your smile
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            Tap a treatment to explore what it involves, then book a consultation when you're ready.
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="eyebrow justify-center">
+            <Sparkles className="size-3.5" /> Our services
+          </p>
+          <h1 className="mt-3 font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
+            Find the right care for your <span className="text-primary">smile</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+            Explore our dental treatments and discover the care that fits your needs, goals and stage of life.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[.8fr_1.2fr] lg:items-stretch">
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-            {featuredServices.map((service, index) => {
-              const selected = service.slug === active.slug;
-              return (
-                <button
-                  key={service.slug}
-                  type="button"
-                  onClick={() => setActiveSlug(service.slug)}
-                  aria-pressed={selected}
-                  className={`group flex items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-300 ${
-                    selected
-                      ? "border-primary bg-background shadow-lg -translate-y-0.5"
-                      : "border-border bg-card/70 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
-                  }`}
-                >
-                  <span
-                    className={`grid size-10 shrink-0 place-items-center rounded-full text-xs font-bold transition-transform duration-300 ${
-                      selected ? "bg-primary text-primary-foreground rotate-6" : "bg-accent text-primary group-hover:rotate-6"
-                    }`}
+        <div className="mt-12 grid gap-5 lg:grid-cols-[310px_1fr] lg:items-start">
+          <div className="rounded-3xl border border-border/70 bg-background/90 p-3 shadow-soft backdrop-blur-sm lg:sticky lg:top-28">
+            <div className="mb-3 px-3 pt-2 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Explore treatments
+            </div>
+            <div className="grid gap-1.5">
+              {available.map((service) => {
+                const selected = service.slug === active.slug;
+                return (
+                  <button
+                    key={service.slug}
+                    type="button"
+                    onClick={() => setActiveSlug(service.slug)}
+                    aria-pressed={selected}
+                    className={cn(
+                      "group flex w-full items-center gap-3 rounded-2xl p-3 text-left transition-all duration-300",
+                      selected
+                        ? "bg-primary text-primary-foreground shadow-lg shadow-primary/15"
+                        : "hover:-translate-y-0.5 hover:bg-accent",
+                    )}
                   >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <strong className="block font-display text-lg text-foreground">{service.title}</strong>
-                    <span className="mt-1 block line-clamp-2 text-xs leading-5 text-muted-foreground">
-                      {service.short}
+                    <span
+                      className={cn(
+                        "grid size-12 shrink-0 overflow-hidden rounded-xl bg-muted transition-transform duration-300 group-hover:scale-105",
+                        selected && "bg-white/15",
+                      )}
+                    >
+                      <img src={serviceImage(service)} alt="" className="h-full w-full object-cover" loading="lazy" />
                     </span>
-                  </span>
-                  <ArrowRight className={`size-4 shrink-0 transition-transform duration-300 ${selected ? "text-primary translate-x-1" : "text-muted-foreground group-hover:translate-x-1"}`} />
-                </button>
-              );
-            })}
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-display text-base">{service.title}</span>
+                      <span className={cn("mt-0.5 block text-xs line-clamp-1", selected ? "text-primary-foreground/75" : "text-muted-foreground")}>
+                        {service.short}
+                      </span>
+                    </span>
+                    <ArrowRight className={cn("size-4 shrink-0", selected && "translate-x-0.5")} />
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <article key={active.slug} className="animate-rise overflow-hidden rounded-3xl border border-border bg-card shadow-premium">
-            <div className="relative h-56 overflow-hidden sm:h-64">
-              <img
-                src={active.image}
-                alt={active.alt}
-                width={1200}
-                height={700}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/65 via-transparent to-transparent" />
-              <span className="absolute bottom-5 left-5 inline-flex items-center gap-2 rounded-full bg-background/90 px-4 py-2 text-sm font-bold text-foreground shadow-lg backdrop-blur">
-                <Sparkles className="size-4 text-coral" />
-                {active.title}
-              </span>
-            </div>
-            <div className="p-6 sm:p-8">
-              <p className="text-sm leading-7 text-muted-foreground">{active.intro}</p>
-              <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-primary">Good to know</p>
-                  <ul className="mt-3 grid gap-2">
-                    {active.benefits.slice(0, 3).map((item) => (
-                      <li key={item} className="flex gap-2 text-sm leading-6 text-foreground">
-                        <Check className="mt-1 size-4 shrink-0 text-primary" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-primary">What to expect</p>
-                  <ol className="mt-3 grid gap-2">
-                    {active.process.slice(0, 3).map((item, index) => (
-                      <li key={item} className="flex gap-2 text-sm leading-6 text-muted-foreground">
-                        <span className="grid size-5 shrink-0 place-items-center rounded-full bg-accent text-[10px] font-bold text-primary">{index + 1}</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ol>
+          <article key={active.slug} className="animate-rise overflow-hidden rounded-3xl border border-border/70 bg-background shadow-premium">
+            <div className="grid lg:grid-cols-[.9fr_1.1fr]">
+              <div className="relative min-h-[300px] overflow-hidden sm:min-h-[440px]">
+                <img
+                  key={active.slug}
+                  src={serviceImage(active)}
+                  alt={active.alt}
+                  width={900}
+                  height={700}
+                  loading="eager"
+                  className="absolute inset-0 h-full w-full object-cover animate-soft-in transition-transform duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/5 to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-white">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/75">ROOTS Dental Care</p>
+                    <p className="mt-1 font-display text-2xl sm:text-3xl">{active.title}</p>
+                  </div>
+                  <span className="grid size-11 shrink-0 place-items-center rounded-full bg-white/15 backdrop-blur-md">
+                    <Sparkles className="size-5" />
+                  </span>
                 </div>
               </div>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Button asChild variant="hero" className="group">
-                  <Link to="/contact" hash="appointment-form">
-                    Book a Consultation
-                    <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline">
-                  <Link to="/services/$slug" params={{ slug: active.slug }}>View Details</Link>
-                </Button>
+
+              <div className="flex flex-col p-7 sm:p-10 lg:p-12">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Prevent • Protect • Smile</p>
+                <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{active.title}</h2>
+                <p className="mt-4 leading-7 text-muted-foreground">{active.intro}</p>
+
+                <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                  {active.benefits.slice(0, 3).map((benefit) => (
+                    <div key={benefit} className="rounded-2xl bg-soft p-4">
+                      <span className="grid size-8 place-items-center rounded-full bg-primary/10 text-primary">
+                        <Check className="size-4" />
+                      </span>
+                      <p className="mt-3 text-sm font-semibold leading-5">{benefit}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Button asChild variant="hero" size="lg">
+                    <Link to="/contact" hash="appointment-form">
+                      <CalendarDays /> Book a Consultation
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link to="/services/$slug" params={{ slug: active.slug }}>
+                      View Details <ArrowRight />
+                    </Link>
+                  </Button>
+                </div>
+
+                <div className="mt-8 border-t pt-7">
+                  <h3 className="font-display text-xl">What to expect</h3>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                    {active.process.slice(0, 3).map((step, index) => (
+                      <div key={step} className="rounded-2xl border bg-card p-4">
+                        <span className="text-xs font-bold text-primary">0{index + 1}</span>
+                        <p className="mt-2 text-sm leading-6 text-muted-foreground">{step}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </article>
+        </div>
+
+        <div className="mt-7 grid gap-3 sm:grid-cols-3">
+          {active.indications.map((item) => (
+            <div key={item} className="flex items-start gap-3 rounded-2xl border border-border/70 bg-background/75 p-4">
+              <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+              <span className="text-sm leading-6 text-muted-foreground">{item}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
