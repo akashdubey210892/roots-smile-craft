@@ -95,16 +95,16 @@ function Index() {
         />
         <Sparkles
           aria-hidden="true"
-          className="animate-float pointer-events-none absolute left-[34%] top-16 hidden size-8 text-sunny drop-shadow-sm sm:block"
+          className="animate-float pointer-events-none absolute left-[34%] top-16 size-6 text-sunny drop-shadow-sm sm:size-8"
         />
         <Star
           aria-hidden="true"
-          className="animate-float-slow pointer-events-none absolute left-[12%] top-[42%] hidden size-6 fill-coral text-coral drop-shadow-sm sm:block"
+          className="animate-float-slow pointer-events-none absolute right-[10%] top-[48%] size-5 fill-coral text-coral drop-shadow-sm sm:left-[12%] sm:right-auto sm:top-[42%] sm:size-6"
           style={{ animationDelay: "1s" }}
         />
         <Smile
           aria-hidden="true"
-          className="animate-float pointer-events-none absolute left-[22%] bottom-[14%] hidden size-9 text-primary/70 drop-shadow-sm sm:block"
+          className="animate-float pointer-events-none absolute left-[8%] bottom-[14%] size-7 text-primary/70 drop-shadow-sm sm:left-[22%] sm:size-9"
           style={{ animationDelay: "2s" }}
         />
         <div className="relative mx-auto flex min-h-[680px] max-w-7xl items-center px-5 py-20 lg:min-h-[720px] lg:px-8">
