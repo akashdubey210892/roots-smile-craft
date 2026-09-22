@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, CalendarDays, CheckCircle2, Heart, Leaf, Phone, Sparkles, Stethoscope } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Heart, Leaf, Phone, Sparkles, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CtaBanner, SectionHeading } from "@/components/clinic";
 import { HighlightList, ManagementCard, TagList } from "@/components/site-extras";
@@ -62,7 +62,7 @@ function ProfileDetail() {
   return (
     <main className="overflow-hidden">
       <section className="relative bg-soft px-5 pb-12 pt-7 sm:pb-16 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[1600px]">
           <nav className="flex flex-wrap items-center gap-2 text-xs font-semibold text-muted-foreground" aria-label="Breadcrumb">
             <Link to="/" className="transition hover:text-primary">Home</Link>
             <span>/</span>
@@ -73,9 +73,9 @@ function ProfileDetail() {
 
           <div className="relative mt-7 overflow-hidden rounded-[2rem] border border-primary/15 bg-card shadow-premium">
             <span className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full bg-primary/10 blur-3xl" />
-            <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
-              <div className="relative min-h-[360px] overflow-hidden bg-soft sm:min-h-[440px] lg:min-h-[520px]">
-                <img src={profile.photo} alt={profile.name} className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 hover:scale-[1.02]" />
+            <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="relative min-h-[360px] overflow-hidden bg-soft sm:min-h-[440px] lg:min-h-[600px]">
+                <img src={profile.photo} alt={profile.name} className="absolute inset-0 size-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/85 via-primary/10 to-transparent" />
                 <div className="absolute left-6 top-6 rounded-full bg-background/90 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.15em] text-primary shadow-sm backdrop-blur">
                   Our Leadership
@@ -112,14 +112,8 @@ function ProfileDetail() {
                   ))}
                 </div>
 
-                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                  <Button asChild variant="hero" className="flex-1">
-                    <Link to="/contact" hash="appointment-form">
-                      <CalendarDays />
-                      Book an Appointment
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" className="sm:px-5">
+                <div className="mt-7">
+                  <Button asChild variant="outline" className="w-full sm:w-auto sm:px-8">
                     <a href={`tel:${clinic.phone}`}>
                       <Phone />
                       Call Clinic
