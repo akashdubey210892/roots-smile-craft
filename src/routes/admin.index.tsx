@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/table";
 import { db } from "@/lib/firebase";
 import { todayIso } from "@/lib/slots";
-import { getDoctor } from "@/lib/clinic-data";
+import { useDoctors } from "@/lib/doctors";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminAppointments,
@@ -50,11 +50,6 @@ type Appointment = {
   service: string;
   message?: string;
 };
-
-function doctorLabel(doctorKey: string) {
-  if (doctorKey === "any") return "Any Available Doctor";
-  return getDoctor(doctorKey)?.name ?? doctorKey;
-}
 
 async function deleteAppointment(a: Appointment) {
   const batch = writeBatch(db);
@@ -164,6 +159,12 @@ function AdminAppointments() {
   const [error, setError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Appointment | null>(null);
+  const { doctors } = useDoctors();
+
+  function doctorLabel(doctorKey: string) {
+    if (doctorKey === "any") return "Any Available Doctor";
+    return doctors.find((doctor) => doctor.id === doctorKey)?.name ?? doctorKey;
+  }
 
   useEffect(() => {
     setLoading(true);
