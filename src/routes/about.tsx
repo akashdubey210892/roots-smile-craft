@@ -83,7 +83,7 @@ function About() {
       </section>
 
       <section className="section bg-soft">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="mx-auto max-w-[1600px] px-5 lg:px-10">
           <SectionHeading
             centered
             eyebrow="Leadership"
@@ -91,7 +91,7 @@ function About() {
             text="The leadership team guiding ROOTS DENTAL CLINIC's clinical standards and patient care."
           />
 
-          <div className="mx-auto mt-12 grid max-w-6xl gap-6 sm:grid-cols-2">
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
             {management.map((profile) => (
               <ManagementCard key={profile.slug} profile={profile} compact />
             ))}
