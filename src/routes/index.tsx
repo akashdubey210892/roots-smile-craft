@@ -16,14 +16,13 @@ import {
   CtaBanner,
   Reveal,
   SectionHeading,
-  ServiceCard,
   ServicesSlider,
   trustItems,
 } from "@/components/clinic";
 import { DoctorCard } from "@/components/site-extras";
 import { SmileJourney } from "@/components/smile-journey";
 import { InteractiveServices } from "@/components/interactive-services";
-import { clinic, services } from "@/lib/clinic-data";
+import { clinic } from "@/lib/clinic-data";
 import { useDoctors } from "@/lib/doctors";
 import { OffersSection, CampaignsSection } from "@/components/promotions";
 import hero from "@/assets/roots-hero.jpg";
@@ -165,16 +164,6 @@ function Index() {
           ) : (
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{doctors.slice(0, 3).map((doctor, i) => <div key={doctor.id} className="animate-pop" style={{ animationDelay: `${i * 120}ms` }}><DoctorCard doctor={doctor} /></div>)}</div>
           )}
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-            <SectionHeading eyebrow="Our services" title="Care for every stage of your smile" text="From prevention and restoration to orthodontic and replacement options." />
-            <Button asChild variant="outline" className="group shrink-0"><Link to="/services">View All Services<ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" /></Link></Button>
-          </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{services.slice(0, 8).map((s, i) => <ServiceCard key={s.slug} service={s} delay={(i % 4) * 90} />)}</div>
         </div>
       </section>
 
