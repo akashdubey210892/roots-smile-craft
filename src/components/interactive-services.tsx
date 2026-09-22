@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { ArrowRight, CalendarDays, Check, ChevronDown, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarDays, Check, Sparkles } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { services, type Service } from "@/lib/clinic-data";
 import { cn } from "@/lib/utils";
 
@@ -103,27 +102,35 @@ export function InteractiveServices() {
             </div>
           </div>
 
-          {/* Mobile treatment navigation: compact selector keeps the selected details immediately visible. */}
+          {/* Mobile treatment navigation: horizontal scroll keeps all services compact and visible. */}
           <div className="mb-5 lg:hidden">
-            <label className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              Choose a treatment
-            </label>
-            <Select value={active.slug} onValueChange={setActiveSlug}>
-              <SelectTrigger className="h-14 rounded-2xl border-border/70 bg-background px-4 text-left shadow-soft">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {available.map((service) => (
-                  <SelectItem key={service.slug} value={service.slug}>
+            <div
+              className="flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              role="tablist"
+              aria-label="Choose a treatment"
+            >
+              {available.map((service) => {
+                const selected = service.slug === active.slug;
+                return (
+                  <button
+                    key={service.slug}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    onClick={() => setActiveSlug(service.slug)}
+                    className={cn(
+                      "shrink-0 whitespace-nowrap rounded-full border px-4 py-2.5 text-sm font-semibold transition-all duration-300",
+                      selected
+                        ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/15"
+                        : "border-border/70 bg-background text-foreground hover:bg-accent",
+                    )}
+                  >
                     {service.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <div className="mt-2 flex items-center gap-2 px-1 text-xs text-muted-foreground">
-              <ChevronDown className="size-3.5 text-primary" />
-              Tap the selector to explore all 16 services
+                  </button>
+                );
+              })}
             </div>
+            <p className="mt-1 px-1 text-xs text-muted-foreground">Swipe left or right to explore all treatments</p>
           </div>
 
           <article key={active.slug} className="animate-rise overflow-hidden rounded-3xl border border-border/70 bg-background shadow-premium lg:col-start-2">
