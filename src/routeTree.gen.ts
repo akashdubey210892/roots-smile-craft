@@ -22,7 +22,6 @@ import { Route as AdminCampaignsRouteImport } from './routes/admin.campaigns'
 import { Route as AdminDoctorsRouteImport } from './routes/admin.doctors'
 import { Route as AdminOffersRouteImport } from './routes/admin.offers'
 import { Route as AdminLoginRouteImport } from './routes/admin_.login'
-import { Route as DoctorsSlugRouteImport } from './routes/doctors.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as AboutOurManagementSlugRouteImport } from './routes/about_.our-management_.$slug'
@@ -92,11 +91,6 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DoctorsSlugRoute = DoctorsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => DoctorsRoute,
-} as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -118,7 +112,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
-  '/doctors': typeof DoctorsRouteWithChildren
+  '/doctors': typeof DoctorsRoute
   '/reviews': typeof ReviewsRoute
   '/services': typeof ServicesRouteWithChildren
   '/about/our-management': typeof AboutOurManagementRoute
@@ -126,7 +120,6 @@ export interface FileRoutesByFullPath {
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/offers': typeof AdminOffersRoute
   '/admin/login': typeof AdminLoginRoute
-  '/doctors/$slug': typeof DoctorsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -136,14 +129,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/doctors': typeof DoctorsRouteWithChildren
+  '/doctors': typeof DoctorsRoute
   '/reviews': typeof ReviewsRoute
   '/about/our-management': typeof AboutOurManagementRoute
   '/admin/campaigns': typeof AdminCampaignsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/offers': typeof AdminOffersRoute
   '/admin/login': typeof AdminLoginRoute
-  '/doctors/$slug': typeof DoctorsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin': typeof AdminIndexRoute
   '/services': typeof ServicesIndexRoute
@@ -155,7 +147,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
-  '/doctors': typeof DoctorsRouteWithChildren
+  '/doctors': typeof DoctorsRoute
   '/reviews': typeof ReviewsRoute
   '/services': typeof ServicesRouteWithChildren
   '/about_/our-management': typeof AboutOurManagementRoute
@@ -163,7 +155,6 @@ export interface FileRoutesById {
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/offers': typeof AdminOffersRoute
   '/admin_/login': typeof AdminLoginRoute
-  '/doctors/$slug': typeof DoctorsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -184,7 +175,6 @@ export interface FileRouteTypes {
     | '/admin/doctors'
     | '/admin/offers'
     | '/admin/login'
-    | '/doctors/$slug'
     | '/services/$slug'
     | '/admin/'
     | '/services/'
@@ -201,7 +191,6 @@ export interface FileRouteTypes {
     | '/admin/doctors'
     | '/admin/offers'
     | '/admin/login'
-    | '/doctors/$slug'
     | '/services/$slug'
     | '/admin'
     | '/services'
@@ -220,7 +209,6 @@ export interface FileRouteTypes {
     | '/admin/doctors'
     | '/admin/offers'
     | '/admin_/login'
-    | '/doctors/$slug'
     | '/services/$slug'
     | '/admin/'
     | '/services/'
@@ -232,7 +220,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   ContactRoute: typeof ContactRoute
-  DoctorsRoute: typeof DoctorsRouteWithChildren
+  DoctorsRoute: typeof DoctorsRoute
   ReviewsRoute: typeof ReviewsRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   AboutOurManagementRoute: typeof AboutOurManagementRoute
@@ -333,13 +321,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/doctors/$slug': {
-      id: '/doctors/$slug'
-      path: '/$slug'
-      fullPath: '/doctors/$slug'
-      preLoaderRoute: typeof DoctorsSlugRouteImport
-      parentRoute: typeof DoctorsRoute
-    }
     '/services/': {
       id: '/services/'
       path: '/'
@@ -380,17 +361,6 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface DoctorsRouteChildren {
-  DoctorsSlugRoute: typeof DoctorsSlugRoute
-}
-
-const DoctorsRouteChildren: DoctorsRouteChildren = {
-  DoctorsSlugRoute: DoctorsSlugRoute,
-}
-
-const DoctorsRouteWithChildren =
-  DoctorsRoute._addFileChildren(DoctorsRouteChildren)
-
 interface ServicesRouteChildren {
   ServicesSlugRoute: typeof ServicesSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
@@ -410,7 +380,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   ContactRoute: ContactRoute,
-  DoctorsRoute: DoctorsRouteWithChildren,
+  DoctorsRoute: DoctorsRoute,
   ReviewsRoute: ReviewsRoute,
   ServicesRoute: ServicesRouteWithChildren,
   AboutOurManagementRoute: AboutOurManagementRoute,

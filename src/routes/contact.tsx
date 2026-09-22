@@ -8,23 +8,21 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PageHero, Reveal } from "@/components/clinic";
 import { GoogleReviewsTeaser } from "@/components/site-extras";
-import { clinic, doctors, getDoctor } from "@/lib/clinic-data";
+import { clinic } from "@/lib/clinic-data";
 import { db } from "@/lib/firebase";
 import { addDaysIso, formatSlotLabel, nowMinutes, todayIso } from "@/lib/slots";
-import { computeAvailableSlotsForDate } from "@/lib/availability";
+import { computeAvailableSlotsForDate, useDoctors, type DoctorProfile } from "@/lib/doctors";
 
 const MAX_LOOKAHEAD_DAYS = 14;
-const DOCTOR_SLUGS = doctors.map((d) => d.slug);
 
 async function dateHasOpenSlot(
   dateIso: string,
   doctorKey: string,
   isTodayDate: boolean,
+  allDoctors: DoctorProfile[],
 ): Promise<boolean> {
-  const [snap, availableSlots] = await Promise.all([
-    getDocs(collection(db, "slots", dateIso, "doctors", doctorKey, "booked")),
-    computeAvailableSlotsForDate(doctorKey, dateIso, DOCTOR_SLUGS),
-  ]);
+  const snap = await getDocs(collection(db, "slots", dateIso, "doctors", doctorKey, "booked"));
+  const availableSlots = computeAvailableSlotsForDate(doctorKey, dateIso, allDoctors);
   const booked = new Set(snap.docs.map((d) => d.id));
   const nowMins = nowMinutes();
   return availableSlots.some((time) => {
@@ -86,21 +84,28 @@ function isPermissionDenied(err: unknown): boolean {
   );
 }
 
-function doctorLabel(doctorKey: string) {
-  if (doctorKey === "any") return "Any Available Doctor";
-  return getDoctor(doctorKey)?.name ?? doctorKey;
-}
-
 type Sent = { date: string; time: string; doctorKey: string };
 
 function Contact() {
-  const { doctor: doctorSlug } = Route.useSearch();
-  const preselectedDoctor = doctorSlug && getDoctor(doctorSlug) ? doctorSlug : "any";
+  const { doctors, loading: loadingDoctors } = useDoctors();
+  const { doctor: doctorParam } = Route.useSearch();
 
-  const [doctorKey, setDoctorKey] = useState(preselectedDoctor);
+  function doctorLabel(doctorKey: string) {
+    if (doctorKey === "any") return "Any Available Doctor";
+    return doctors.find((d) => d.id === doctorKey)?.name ?? doctorKey;
+  }
+
+  const [doctorKey, setDoctorKey] = useState(doctorParam ?? "any");
+  // The doctor list loads asynchronously, so a preselected `?doctor=` search param
+  // can only be validated against it once doctors have actually arrived.
   useEffect(() => {
-    setDoctorKey(preselectedDoctor);
-  }, [preselectedDoctor]);
+    if (loadingDoctors) return;
+    if (doctorParam && doctors.some((d) => d.id === doctorParam)) {
+      setDoctorKey(doctorParam);
+    } else {
+      setDoctorKey("any");
+    }
+  }, [doctorParam, doctors, loadingDoctors]);
 
   const [date, setDate] = useState(todayIso());
   const [minDate, setMinDate] = useState(todayIso());
@@ -115,12 +120,13 @@ function Contact() {
   // open slot, otherwise the first future date (within two weeks) that does —
   // and disable every date before that in the picker.
   useEffect(() => {
+    if (loadingDoctors) return;
     let cancelled = false;
     setFindingDate(true);
     (async () => {
       const start = todayIso();
       try {
-        if (await dateHasOpenSlot(start, doctorKey, true)) {
+        if (await dateHasOpenSlot(start, doctorKey, true, doctors)) {
           if (!cancelled) setMinDate(start);
           return;
         }
@@ -128,7 +134,7 @@ function Contact() {
         if (!cancelled) setMinDate(nextMin);
         for (let i = 1; i <= MAX_LOOKAHEAD_DAYS; i++) {
           const candidate = addDaysIso(start, i);
-          if (await dateHasOpenSlot(candidate, doctorKey, false)) {
+          if (await dateHasOpenSlot(candidate, doctorKey, false, doctors)) {
             if (!cancelled) setDate(candidate);
             return;
           }
@@ -145,7 +151,7 @@ function Contact() {
     return () => {
       cancelled = true;
     };
-  }, [doctorKey]);
+  }, [doctorKey, doctors, loadingDoctors]);
 
   function refreshBookedTimes() {
     return getDocs(collection(db, "slots", date, "doctors", doctorKey, "booked"))
@@ -154,18 +160,16 @@ function Contact() {
   }
 
   useEffect(() => {
+    if (loadingDoctors) return;
     let cancelled = false;
     setLoadingSlots(true);
     setSelectedTime(null);
     setSlotsBlocked(false);
-    Promise.all([
-      getDocs(collection(db, "slots", date, "doctors", doctorKey, "booked")),
-      computeAvailableSlotsForDate(doctorKey, date, DOCTOR_SLUGS),
-    ])
-      .then(([snap, slots]) => {
+    getDocs(collection(db, "slots", date, "doctors", doctorKey, "booked"))
+      .then((snap) => {
         if (cancelled) return;
         setBookedTimes(new Set(snap.docs.map((d) => d.id)));
-        setAvailableSlots(slots);
+        setAvailableSlots(computeAvailableSlotsForDate(doctorKey, date, doctors));
       })
       .catch((err) => {
         if (!cancelled) {
@@ -180,7 +184,7 @@ function Contact() {
     return () => {
       cancelled = true;
     };
-  }, [date, doctorKey]);
+  }, [date, doctorKey, doctors, loadingDoctors]);
 
   const isToday = date === todayIso();
   const minutesNow = nowMinutes();
@@ -395,7 +399,7 @@ function Contact() {
                   >
                     <option value="any">Any Doctor</option>
                     {doctors.map((d) => (
-                      <option key={d.slug} value={d.slug}>
+                      <option key={d.id} value={d.id}>
                         {d.name}
                       </option>
                     ))}

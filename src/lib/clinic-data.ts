@@ -456,70 +456,8 @@ export const featuredSlugs = [
 ];
 export const getService = (slug: string) => services.find((service) => service.slug === slug);
 
-export type Doctor = {
-  slug: string;
-  initials: string;
-  name: string;
-  role: string;
-  credentials: string[];
-  tags: string[];
-  highlights: string[];
-  bio: string[];
-  keywords: string[];
-  seoDescription: string;
-};
-
-// Placeholder profiles — real doctor names, photos and bios will replace these once
-// confirmed. Swap the entries below; nothing elsewhere needs to change.
-export const doctors: Doctor[] = [
-  {
-    slug: "dr-placeholder-one",
-    initials: "GD",
-    name: "Dr Placeholder One",
-    role: "General & Preventive Dentistry",
-    credentials: ["BDS", "Credentials to be confirmed"],
-    tags: ["General Dentistry", "Restoration", "Dental Cleaning", "Periodontal Care"],
-    highlights: ["Profile to be confirmed", "Years of experience to be confirmed"],
-    bio: [
-      "This is a placeholder profile. Verified name, qualifications and experience will be added soon.",
-    ],
-    keywords: ["General Dentist", "Dental Checkup", "Dental Cleaning"],
-    seoDescription:
-      "Placeholder profile for a general dentist at ROOTS DENTAL CLINIC, Yelahanka. Verified details coming soon.",
-  },
-  {
-    slug: "dr-placeholder-two",
-    initials: "OR",
-    name: "Dr Placeholder Two",
-    role: "Orthodontics & Aligners",
-    credentials: ["BDS, MDS (Orthodontics)", "Credentials to be confirmed"],
-    tags: ["Braces", "Clear Aligners", "Smile Design & Correction"],
-    highlights: ["Profile to be confirmed", "Years of experience to be confirmed"],
-    bio: [
-      "This is a placeholder profile. Verified name, qualifications and experience will be added soon.",
-    ],
-    keywords: ["Orthodontist", "Braces", "Clear Aligners"],
-    seoDescription:
-      "Placeholder profile for an orthodontist at ROOTS DENTAL CLINIC, Yelahanka. Verified details coming soon.",
-  },
-  {
-    slug: "dr-placeholder-three",
-    initials: "PD",
-    name: "Dr Placeholder Three",
-    role: "Pediatric Dentistry",
-    credentials: ["BDS, MDS (Pediatric Dentistry)", "Credentials to be confirmed"],
-    tags: ["Pediatric Dentistry", "Preventive Care", "Early Orthodontic Screening"],
-    highlights: ["Profile to be confirmed", "Years of experience to be confirmed"],
-    bio: [
-      "This is a placeholder profile. Verified name, qualifications and experience will be added soon.",
-    ],
-    keywords: ["Pediatric Dentist", "Kids Dental Care", "Children's Dentist"],
-    seoDescription:
-      "Placeholder profile for a pediatric dentist at ROOTS DENTAL CLINIC, Yelahanka. Verified details coming soon.",
-  },
-];
-
-export const getDoctor = (slug: string) => doctors.find((d) => d.slug === slug);
+// Doctor profiles now live in Firestore (see src/lib/doctors.ts) and are managed
+// from /admin/doctors, so patients always book against the real, current roster.
 
 export const googlePlaceId = "ChIJ38lpDM8ZrjsRgUn-jpbdV1E";
 export const reviewLinks = {

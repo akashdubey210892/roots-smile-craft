@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Award, CalendarDays, Star } from "lucide-react";
+import { Award, CalendarDays, GraduationCap, Sparkles, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/clinic";
-import { reviewLinks, type Doctor, type ManagementProfile } from "@/lib/clinic-data";
+import { reviewLinks, type ManagementProfile } from "@/lib/clinic-data";
+import { doctorInitials, type DoctorProfile } from "@/lib/doctors";
 import { useGoogleReviews } from "@/lib/use-google-reviews";
 
 export function ProfileAvatar({
@@ -11,7 +12,7 @@ export function ProfileAvatar({
   name,
   size = "md",
 }: {
-  photo?: string;
+  photo?: string | undefined;
   initials: string;
   name: string;
   size?: "md" | "lg";
@@ -66,20 +67,26 @@ export function HighlightList({ items }: { items: string[] }) {
   );
 }
 
-export function DoctorCard({ doctor }: { doctor: Doctor }) {
+export function DoctorCard({ doctor }: { doctor: DoctorProfile }) {
   return (
     <Reveal>
-      <article className="group flex flex-col items-center rounded-lg border border-border bg-card p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-        <ProfileAvatar initials={doctor.initials} name={doctor.name} />
-        <p className="mt-6 text-xs font-bold uppercase tracking-widest text-primary">
-          {doctor.role}
+      <article className="flex flex-col items-center rounded-lg border border-border bg-card p-8 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+        <ProfileAvatar
+          photo={doctor.photo?.url}
+          initials={doctorInitials(doctor.name)}
+          name={doctor.name}
+        />
+        <h3 className="mt-6 font-display text-xl text-foreground">{doctor.name}</h3>
+        <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-primary">
+          <Sparkles className="size-4" />
+          {doctor.yearsOfExperience}+ years of experience
         </p>
-        <h3 className="mt-2 font-display text-xl text-foreground">{doctor.name}</h3>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          {doctor.credentials.join(" · ")}
+        <p className="mt-2 flex items-center gap-1.5 text-sm leading-6 text-muted-foreground">
+          <GraduationCap className="mt-0.5 size-4 shrink-0" />
+          {doctor.qualification}
         </p>
         <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-          {doctor.tags.slice(0, 3).map((t) => (
+          {doctor.services.map((t) => (
             <span
               key={t}
               className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-primary"
@@ -88,19 +95,12 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
             </span>
           ))}
         </div>
-        <div className="mt-6 grid w-full gap-2">
-          <Button asChild variant="hero">
-            <Link to="/contact" search={{ doctor: doctor.slug }} hash="appointment-form">
-              <CalendarDays />
-              Book Appointment
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/doctors/$slug" params={{ slug: doctor.slug }}>
-              View Profile
-            </Link>
-          </Button>
-        </div>
+        <Button asChild variant="hero" className="mt-6 w-full">
+          <Link to="/contact" search={{ doctor: doctor.id }} hash="appointment-form">
+            <CalendarDays />
+            Book Appointment
+          </Link>
+        </Button>
       </article>
     </Reveal>
   );
