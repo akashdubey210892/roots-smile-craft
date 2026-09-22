@@ -197,17 +197,11 @@ export function ManagementCard({
               ))}
             </div>
 
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Button asChild variant="hero" className="flex-1">
+            <div className="mt-7">
+              <Button asChild variant="hero" className="w-full">
                 <Link to="/about/our-management/$slug" params={{ slug: profile.slug }}>
                   View Full Profile
                   <Sparkles />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="sm:px-5">
-                <Link to="/contact" hash="appointment-form">
-                  <CalendarDays />
-                  Appointment
                 </Link>
               </Button>
             </div>
