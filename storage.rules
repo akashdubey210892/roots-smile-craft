@@ -3,6 +3,20 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
+    // Doctor profile photos are displayed on the public website.
+    // Any visitor can read them; authenticated staff can upload, replace,
+    // or delete them. Uploads are restricted to image files under 10 MB.
+    match /doctors/{file} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.contentType.matches('image/.*')
+        && request.resource.size < 10 * 1024 * 1024;
+      allow update: if request.auth != null
+        && request.resource.contentType.matches('image/.*')
+        && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null;
+    }
+
     // Offer and campaign images: public to view, staff-only to upload or delete.
     match /{folder}/{file} {
       allow read: if folder in ['offers', 'campaigns'];
