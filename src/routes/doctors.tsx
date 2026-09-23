@@ -27,6 +27,12 @@ export const Route = createFileRoute("/doctors")({
 function Doctors() {
   const { doctors, loading } = useDoctors();
 
+  // Keep the Firestore/default ordering unchanged elsewhere, but display
+  // the Our Doctors page from highest to lowest clinical experience.
+  const doctorsByExperience = [...doctors].sort(
+    (a, b) => b.yearsOfExperience - a.yearsOfExperience,
+  );
+
   return (
     <main>
       <PageHero
@@ -43,13 +49,13 @@ function Doctors() {
           />
           {loading ? (
             <p className="mt-10 text-sm text-muted-foreground">Loading our doctors…</p>
-          ) : doctors.length === 0 ? (
+          ) : doctorsByExperience.length === 0 ? (
             <p className="mt-10 text-sm text-muted-foreground">
               Doctor profiles will appear here soon.
             </p>
           ) : (
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {doctors.map((doctor) => (
+              {doctorsByExperience.map((doctor) => (
                 <DoctorCard key={doctor.id} doctor={doctor} />
               ))}
             </div>
