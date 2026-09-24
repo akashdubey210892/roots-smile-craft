@@ -9,12 +9,18 @@ export const Route = createFileRoute("/doctors")({
       { title: "Our Dentists in Yelahanka | ROOTS Dental" },
       {
         name: "description",
-        content: "Meet the dental care team at ROOTS DENTAL CLINIC in Yelahanka.",
+        content:
+          "Meet the dental care team at ROOTS DENTAL CLINIC in Yelahanka, Bengaluru. Explore doctor qualifications, experience and areas of dental care.",
+      },
+      {
+        name: "keywords",
+        content:
+          "dentists Yelahanka, dental doctors Yelahanka, dentist Bengaluru, ROOTS Dental doctors, dental specialists Yelahanka",
       },
       { property: "og:title", content: "Our Doctors | ROOTS DENTAL CLINIC" },
       {
         property: "og:description",
-        content: "Explore the dental care team at ROOTS in Yelahanka.",
+        content: "Explore the dental care team at ROOTS in Yelahanka, Bengaluru.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
