@@ -28,6 +28,9 @@ import { OffersSection, CampaignsSection } from "@/components/promotions";
 import hero from "@/assets/roots-hero.jpg";
 import consultation from "@/assets/patient-consultation.jpg";
 
+const CLINIC_MAP_URL = "https://www.google.com/maps/place/Roots+Dental+Clinic/@13.1927079,77.4955784,9.78z/data=!4m6!3m5!1s0x3bae19cf0c69c9df:0x5157dd968efe4981!8m2!3d13.1429128!4d77.5693407!16s%2Fg%2F11zxr_x29p?entry=ttu&g_ep=EgoyMDI2MDkyMS4wIKXMDSoASAFQAw%3D%3D";
+const CLINIC_MAP_EMBED_URL = "https://www.google.com/maps?q=13.1429128,77.5693407&output=embed";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -189,7 +192,7 @@ function Index() {
             <h3 className="mt-7 font-display text-xl">{clinic.name}</h3>
             <address className="mt-3 max-w-md not-italic leading-7 text-muted-foreground">{clinic.address}</address>
             <div className="mt-6 grid gap-3"><a className="contact-link" href={`tel:${clinic.phone}`}><Phone /> {clinic.phone}</a><a className="contact-link" href={`mailto:${clinic.email}`}><Mail /> {clinic.email}</a></div>
-            <div className="mt-7 flex flex-wrap gap-3"><Button asChild variant="hero"><a href={clinic.directions} target="_blank" rel="noreferrer"><MapPin />Get Directions</a></Button><Button asChild variant="outline"><a href={`tel:${clinic.phone}`}><Phone />Call Now</a></Button></div>
+            <div className="mt-7 flex flex-wrap gap-3"><Button asChild variant="hero"><a href={CLINIC_MAP_URL} target="_blank" rel="noreferrer"><MapPin />Get Directions</a></Button><Button asChild variant="outline"><a href={`tel:${clinic.phone}`}><Phone />Call Now</a></Button></div>
           </Reveal>
           <Reveal delay={120}><MapEmbed /></Reveal>
         </div>
@@ -199,5 +202,5 @@ function Index() {
 }
 
 function MapEmbed() {
-  return <div className="min-h-[400px] overflow-hidden rounded-3xl border bg-soft shadow-soft"><iframe title="Map showing ROOTS Dental Clinic in Yelahanka" src="https://www.google.com/maps?q=Singanayakanahalli%20Yelahanka%20Bengaluru%20560064&output=embed" loading="lazy" className="h-full min-h-[400px] w-full border-0" referrerPolicy="no-referrer-when-downgrade" /></div>;
+  return <div className="min-h-[400px] overflow-hidden rounded-3xl border bg-soft shadow-soft"><iframe title="Map showing ROOTS Dental Clinic in Yelahanka" src={CLINIC_MAP_EMBED_URL} loading="lazy" className="h-full min-h-[400px] w-full border-0" referrerPolicy="no-referrer-when-downgrade" /></div>;
 }
