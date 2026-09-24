@@ -15,6 +15,10 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Footer, Header, MobileActions } from "@/components/clinic";
 import { Button } from "@/components/ui/button";
 
+const SITE_URL = "https://www.rootsadvanceddentalclinic.com";
+const MAP_URL =
+  "https://www.google.com/maps/place/Roots+Dental+Clinic/@13.1927079,77.4955784,9.78z/data=!4m6!3m5!1s0x3bae19cf0c69c9df:0x5157dd968efe4981!8m2!3d13.1429128!4d77.5693407!16s%2Fg%2F11zxr_x29p?entry=ttu&g_ep=EgoyMDI2MDkyMS4wIKXMDSoASAFQAw%3D%3D";
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -79,26 +83,40 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { viewport: "width=device-width, initial-scale=1" },
+      { title: "ROOTS DENTAL CLINIC | Dentist in Yelahanka, Bengaluru" },
       { name: "author", content: "ROOTS DENTAL CLINIC" },
       {
         name: "description",
         content:
-          "ROOTS DENTAL CLINIC in Yelahanka, Bengaluru provides personalized dental care including general dentistry, root canal treatment, implants, braces, aligners and pediatric dentistry.",
+          "ROOTS DENTAL CLINIC in Yelahanka, Bengaluru provides personalized dental care including general dentistry, root canal treatment, implants, braces, clear aligners, pediatric dentistry and more.",
       },
       {
         name: "keywords",
         content:
-          "dentist Yelahanka, dental clinic Yelahanka, dentist in Bengaluru, dental clinic Bengaluru, root canal Yelahanka, dental implants Yelahanka, braces Yelahanka, clear aligners Yelahanka, pediatric dentist Yelahanka",
+          "dentist Yelahanka, dental clinic Yelahanka, dentist in Bengaluru, dental clinic Bengaluru, root canal Yelahanka, dental implants Yelahanka, braces Yelahanka, clear aligners Yelahanka, pediatric dentist Yelahanka, cosmetic dentist Yelahanka",
       },
-      { name: "robots", content: "index, follow, max-image-preview:large" },
-      { name: "googlebot", content: "index, follow, max-image-preview:large" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      { name: "googlebot", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      { name: "theme-color", content: "#0a8f98" },
+      { name: "format-detection", content: "telephone=yes" },
       { property: "og:site_name", content: "ROOTS DENTAL CLINIC" },
       { property: "og:locale", content: "en_IN" },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: `${SITE_URL}/favicon.png` },
+      { property: "og:image:alt", content: "ROOTS DENTAL CLINIC logo" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "ROOTS DENTAL CLINIC | Dentist in Yelahanka, Bengaluru" },
+      {
+        name: "twitter:description",
+        content: "Personalized dental care for families in Yelahanka, Bengaluru.",
+      },
+      { name: "twitter:image", content: `${SITE_URL}/favicon.png` },
     ],
     links: [
+      { rel: "canonical", href: SITE_URL },
+      { rel: "sitemap", type: "application/xml", href: `${SITE_URL}/sitemap.xml` },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -112,6 +130,39 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon-32.png", sizes: "32x32", type: "image/png" },
       { rel: "icon", href: "/favicon.png", sizes: "512x512", type: "image/png" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Dentist",
+          "@id": `${SITE_URL}/#dentist`,
+          name: "ROOTS DENTAL CLINIC",
+          url: SITE_URL,
+          image: `${SITE_URL}/favicon.png`,
+          telephone: "+91 8009537637",
+          email: "drykkiran@gmail.com",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "#63/2, Shree Sai Layout, Singanayakanahalli, Doddaballapur Main Road",
+            addressLocality: "Yelahanka",
+            addressRegion: "Karnataka",
+            postalCode: "560064",
+            addressCountry: "IN",
+          },
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: 13.1429128,
+            longitude: 77.5693407,
+          },
+          areaServed: [
+            { "@type": "City", name: "Bengaluru" },
+            { "@type": "Place", name: "Yelahanka" },
+          ],
+          hasMap: MAP_URL,
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
