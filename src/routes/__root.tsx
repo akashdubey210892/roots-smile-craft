@@ -81,6 +81,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: "ROOTS DENTAL CLINIC" },
+      {
+        name: "description",
+        content:
+          "ROOTS DENTAL CLINIC in Yelahanka, Bengaluru provides personalized dental care including general dentistry, root canal treatment, implants, braces, aligners and pediatric dentistry.",
+      },
+      {
+        name: "keywords",
+        content:
+          "dentist Yelahanka, dental clinic Yelahanka, dentist in Bengaluru, dental clinic Bengaluru, root canal Yelahanka, dental implants Yelahanka, braces Yelahanka, clear aligners Yelahanka, pediatric dentist Yelahanka",
+      },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "googlebot", content: "index, follow, max-image-preview:large" },
+      { property: "og:site_name", content: "ROOTS DENTAL CLINIC" },
+      { property: "og:locale", content: "en_IN" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -108,7 +122,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-IN">
       <head>
         <HeadContent />
       </head>
