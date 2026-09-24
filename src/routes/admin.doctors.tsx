@@ -230,11 +230,16 @@ function DoctorForm({
   );
   const [qualification, setQualification] = useState(doctor?.qualification ?? "");
   const [selectedServices, setSelectedServices] = useState<string[]>(doctor?.services ?? []);
+  const [newService, setNewService] = useState("");
   const [availability, setAvailability] = useState<DayAvailability>(
     doctor?.availability ?? emptyAvailability(),
   );
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const customServices = selectedServices.filter(
+    (selected) => !services.some((service) => service.title === selected),
+  );
 
   useEffect(() => {
     return () => {
@@ -258,6 +263,21 @@ function DoctorForm({
     setSelectedServices((prev) =>
       prev.includes(service) ? prev.filter((s) => s !== service) : [...prev, service],
     );
+  }
+
+  function addCustomService() {
+    const value = newService.trim();
+    if (!value) return;
+
+    const exists = selectedServices.some((service) => service.toLowerCase() === value.toLowerCase());
+    if (exists) {
+      setError("This service is already added to the profile.");
+      return;
+    }
+
+    setSelectedServices((prev) => [...prev, value]);
+    setNewService("");
+    setError(null);
   }
 
   function updateRange(day: DayKey, index: number, patch: Partial<TimeRange>) {
@@ -366,7 +386,36 @@ function DoctorForm({
           <p className="text-sm font-semibold">
             Services <span className="font-normal text-muted-foreground">(shown on their profile card)</span>
           </p>
-          <div className="grid max-h-48 gap-2 overflow-y-auto rounded-md border border-border p-3 sm:grid-cols-2">
+
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Input
+              value={newService}
+              onChange={(e) => setNewService(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addCustomService();
+                }
+              }}
+              placeholder="Add a new service for this profile"
+              aria-label="New service"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addCustomService}
+              disabled={!newService.trim()}
+              className="shrink-0"
+            >
+              <Plus className="size-4" />
+              Add Service
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Add a service that isn't in the standard list. It will be selected for this doctor only.
+          </p>
+
+          <div className="grid max-h-64 gap-2 overflow-y-auto rounded-md border border-border p-3 sm:grid-cols-2">
             {services.map((s) => (
               <label key={s.slug} className="flex cursor-pointer items-center gap-2 text-sm">
                 <Checkbox
@@ -374,6 +423,16 @@ function DoctorForm({
                   onCheckedChange={() => toggleService(s.title)}
                 />
                 {s.title}
+              </label>
+            ))}
+
+            {customServices.map((service) => (
+              <label key={`custom-${service}`} className="flex cursor-pointer items-center gap-2 text-sm">
+                <Checkbox checked onCheckedChange={() => toggleService(service)} />
+                <span className="min-w-0 truncate">{service}</span>
+                <span className="ml-auto shrink-0 rounded-full bg-accent px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-primary">
+                  Custom
+                </span>
               </label>
             ))}
           </div>
