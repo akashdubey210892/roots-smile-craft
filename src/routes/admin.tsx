@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 import logoIcon from "@/assets/roots-logo-icon.png";
 
 export const Route = createFileRoute("/admin")({
+  head: () => ({
+    meta: [
+      { title: "Admin | ROOTS DENTAL CLINIC" },
+      { name: "robots", content: "noindex, nofollow, noarchive" },
+      { name: "googlebot", content: "noindex, nofollow, noarchive" },
+    ],
+  }),
   component: AdminLayout,
 });
 
@@ -43,64 +50,28 @@ function AdminLayout() {
 
   if (!authed) {
     return (
-      <div className="grid min-h-screen place-items-center bg-muted text-sm text-muted-foreground">
-        Loading…
-      </div>
+      <div className="min-h-screen bg-soft" />
     );
   }
 
   return (
-    <div className="min-h-screen bg-muted">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <img src={logoIcon} alt="" className="size-9 shrink-0 object-contain" />
+    <div className="min-h-screen bg-soft">
+      <header className="border-b bg-background">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+          <Link to="/admin" className="flex items-center gap-3">
+            <img src={logoIcon} alt="ROOTS" className="size-10" />
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-primary">
-                ROOTS DENTAL CLINIC
-              </p>
-              <h1 className="font-display text-xl text-foreground">Staff Admin</h1>
+              <p className="font-display text-xl">ROOTS</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Admin</p>
             </div>
+          </Link>
+          <div className="flex items-center gap-2">
+            <Button asChild variant="outline" size="sm"><Link to="/">View site</Link></Button>
+            <Button variant="outline" size="sm" onClick={handleLogout}>Sign out</Button>
           </div>
-          <nav className="flex flex-wrap items-center gap-2" aria-label="Admin navigation">
-            <Link
-              to="/admin"
-              className="rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground"
-              activeProps={{ className: "bg-accent text-foreground" }}
-              activeOptions={{ exact: true }}
-            >
-              Appointments
-            </Link>
-            <Link
-              to="/admin/doctors"
-              className="rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground"
-              activeProps={{ className: "bg-accent text-foreground" }}
-            >
-              Doctor Availability
-            </Link>
-            <Link
-              to="/admin/offers"
-              className="rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground"
-              activeProps={{ className: "bg-accent text-foreground" }}
-            >
-              Offers
-            </Link>
-            <Link
-              to="/admin/campaigns"
-              className="rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground"
-              activeProps={{ className: "bg-accent text-foreground" }}
-            >
-              Campaigns
-            </Link>
-            <Button variant="outline" onClick={handleLogout}>
-              Logout
-            </Button>
-          </nav>
         </div>
       </header>
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-        <Outlet />
-      </main>
+      <Outlet />
     </div>
   );
 }
