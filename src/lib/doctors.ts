@@ -70,11 +70,16 @@ export function slotsForDoctorOnDate(doctor: DoctorProfile, dateIso: string): st
   return expandRangesToSlots(doctor.availability[dayKey] ?? []);
 }
 
-/** Union of every doctor's slots on a given date, for the "Any Doctor" booking option. */
-export function slotsForAnyDoctorOnDate(doctors: DoctorProfile[], dateIso: string): string[] {
-  const union = new Set<string>();
-  doctors.forEach((d) => slotsForDoctorOnDate(d, dateIso).forEach((s) => union.add(s)));
-  return Array.from(union).sort();
+/** Fixed clinic-wide slots for the "Any Doctor" booking option. */
+export function slotsForAnyDoctorOnDate(_doctors: DoctorProfile[], _dateIso: string): string[] {
+  const slots: string[] = [];
+  // Generic bookings are available from 10:00 AM through 7:45 PM in 15-minute increments.
+  for (let m = 10 * 60; m < 20 * 60; m += SLOT_MINUTES) {
+    const h = Math.floor(m / 60).toString().padStart(2, "0");
+    const mm = (m % 60).toString().padStart(2, "0");
+    slots.push(`${h}:${mm}`);
+  }
+  return slots;
 }
 
 /** Slots for a specific doctor id, or "any", given the currently loaded doctor list. */
