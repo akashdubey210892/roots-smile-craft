@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { viewport: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "ROOTS DENTAL CLINIC | Dentist in Yelahanka, Bengaluru" },
       { name: "author", content: "ROOTS DENTAL CLINIC" },
       {
@@ -103,19 +103,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "ROOTS DENTAL CLINIC" },
       { property: "og:locale", content: "en_IN" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: SITE_URL },
       { property: "og:image", content: `${SITE_URL}/favicon.png` },
       { property: "og:image:alt", content: "ROOTS DENTAL CLINIC logo" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "ROOTS DENTAL CLINIC | Dentist in Yelahanka, Bengaluru" },
-      {
-        name: "twitter:description",
-        content: "Personalized dental care for families in Yelahanka, Bengaluru.",
-      },
       { name: "twitter:image", content: `${SITE_URL}/favicon.png` },
     ],
     links: [
-      { rel: "canonical", href: SITE_URL },
       { rel: "sitemap", type: "application/xml", href: `${SITE_URL}/sitemap.xml` },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -123,10 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap",
       },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon-32.png", sizes: "32x32", type: "image/png" },
       { rel: "icon", href: "/favicon.png", sizes: "512x512", type: "image/png" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
