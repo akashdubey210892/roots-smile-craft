@@ -1,11 +1,19 @@
 User-agent: Googlebot
 Allow: /
 Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
 
 User-agent: Bingbot
 Allow: /
 Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
 
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+
+Sitemap: https://www.rootsadvanceddentalclinic.com/sitemap.xml
