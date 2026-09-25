@@ -166,6 +166,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en-IN">
       <head>
         <HeadContent />
+        <style>{`footer .mt-6.flex.gap-2 { display: none !important; }`}</style>
       </head>
       <body>
         {children}
